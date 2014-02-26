@@ -1,0 +1,12 @@
+{
+    "name": "vue-touch",
+    "version": "0.0.1",
+    "main": "index.js",
+    "scripts": ["index.js"],
+    "dependencies": {
+        "EightMedia/hammer.js": "*"
+    },
+    "development": {
+        "yyx990803/vue": "*"
+    }
+}
