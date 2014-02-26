@@ -1,0 +1,13 @@
+{
+  "name": "vue-touch",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vuejs/vue-touch.git"
+  },
+  "bugs": "https://github.com/vuejs/vue-touch/issues",
+  "dependencies": {
+    "hammerjs": "~1.0.6"
+  }
+}
