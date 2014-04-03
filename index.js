@@ -18,7 +18,8 @@ exports.install = function (Vue) {
         },
         unbind: function () {
             this.el.hammer.off(this.arg, this.handler)
-            if (!this.el.hammer._eventHandler.length) {
+            if (!this.el.hammer.eventHandlers.length) {
+                this.el.hammer.dispose()
                 this.el.hammer = null
             }
         }
