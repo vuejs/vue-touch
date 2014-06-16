@@ -8,6 +8,6 @@
   },
   "bugs": "https://github.com/vuejs/vue-touch/issues",
   "dependencies": {
-    "hammerjs": "~1.0.6"
+    "hammerjs": "~1.1.3"
   }
 }
