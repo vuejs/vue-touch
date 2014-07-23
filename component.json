@@ -4,7 +4,7 @@
     "main": "index.js",
     "scripts": ["index.js"],
     "dependencies": {
-        "EightMedia/hammer.js": "*"
+        "hammerjs/hammer.js": "^2.0.1"
     },
     "development": {
         "yyx990803/vue": "*"

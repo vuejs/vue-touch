@@ -1,6 +1,6 @@
 {
   "name": "vue-touch",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -8,6 +8,12 @@
   },
   "bugs": "https://github.com/vuejs/vue-touch/issues",
   "dependencies": {
-    "hammerjs": "~1.1.3"
+    "hammerjs": "^2.0.1"
+  },
+  "devDependencies": {
+    "vue": "^0.10.5"
+  },
+  "scripts": {
+    "build": "browserify -e example/example.js -o example/example.build.js"
   }
 }

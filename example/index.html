@@ -1,0 +1,19 @@
+<style>
+    div {
+      width: 300px;
+      height: 300px;
+      background-color: #f00;
+    }
+</style>
+
+<div v-touch="
+  tap:test,
+  pan:test,
+  press:test,
+  swipe:test,
+  pinch:test,
+  rotate:test,
+  doubletap: test
+" v-text="event"></div>
+
+<script src="example.build.js"></script>
