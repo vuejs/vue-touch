@@ -16,7 +16,7 @@ exports.install = function (Vue) {
       // determine event type
       var event = this.arg
       var recognizerType, recognizer
-      
+
       if (customeEvents[event]) { // custom event
 
         var custom = customeEvents[event]
@@ -67,7 +67,7 @@ exports.install = function (Vue) {
 
     unbind: function () {
       this.mc.off(this.arg, this.handler)
-      if (!this.mc.handlers.length) {
+      if (!Object.keys(this.mc.handlers).length) {
         this.mc.destroy()
         this.el.hammer = null
       }
