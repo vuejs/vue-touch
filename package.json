@@ -1,7 +1,9 @@
 {
   "name": "vue-touch",
-  "version": "0.0.2",
-  "main": "index.js",
+  "version": "0.1.0",
+  "main": "vue-touch.js",
+  "description": "Hammer.js based touch events plugin for Vue.js",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/vuejs/vue-touch.git"
@@ -14,6 +16,7 @@
     "vue": "^0.10.5"
   },
   "scripts": {
-    "build": "browserify -e example/example.js -o example/example.build.js"
+    "build": "browserify -e example/example.js -o example/example.build.js",
+    "dev": "watchify -e example/example.js -o example/example.build.js"
   }
 }

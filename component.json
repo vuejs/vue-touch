@@ -1,8 +1,10 @@
 {
     "name": "vue-touch",
-    "version": "0.0.1",
-    "main": "index.js",
-    "scripts": ["index.js"],
+    "version": "0.1.0",
+    "main": "vue-touch.js",
+    "description": "Hammer.js based touch events plugin for Vue.js",
+    "license": "MIT",
+    "scripts": ["vue-touch.js"],
     "dependencies": {
         "hammerjs/hammer.js": "^2.0.1"
     },
