@@ -16,7 +16,7 @@ exports.install = function (Vue) {
       // determine event type
       var event = this.arg
       var recognizerType, recognizer
-
+      
       if (customeEvents[event]) { // custom event
 
         var custom = customeEvents[event]
@@ -67,7 +67,7 @@ exports.install = function (Vue) {
 
     unbind: function () {
       this.mc.off(this.arg, this.handler)
-      if (!objectLength(this.mc.handlers)) {
+      if (!this.mc.handlers.length) {
         this.mc.destroy()
         this.el.hammer = null
       }
@@ -92,10 +92,4 @@ exports.registerCustomEvent = function (event, options) {
 
 function capitalize (str) {
   return str.charAt(0).toUpperCase() + str.slice(1)
-}
-
-function objectLength(obj) {
-  var length = 0;
-  for (var key in obj) if (obj.hasOwnProperty(key)) length++;
-  return length
 }
