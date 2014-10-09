@@ -1,7 +1,9 @@
 ;(function () {
 
   var vueTouch = {}
-  var Hammer = require('hammerjs')
+  var Hammer = typeof require === 'function'
+    ? require('hammerjs')
+    : window.Hammer
   var gestures = ['tap', 'pan', 'pinch', 'press', 'rotate', 'swipe']
   var customeEvents = {}
 
