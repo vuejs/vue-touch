@@ -12,6 +12,7 @@
     Vue.directive('touch', {
 
       isFn: true,
+      acceptStatement: true,
 
       bind: function () {
         if (!this.el.hammer) {
