@@ -39,7 +39,7 @@ VueTouch.registerCustomEvent('doubletap', {
 })
 ```
 
-See [Hammer.js documentation](http://hammerjs.github.io/getting-started.html) for all available events.
+See [Hammer.js documentation](http://hammerjs.github.io/getting-started/) for all available events.
 
 See `/example` for a multi-event demo. To build the example, you need to have Browserify installed and then `npm run build`.
 
