@@ -8,7 +8,7 @@ This is a directive wrapper for Hammer.js 2.0.
 
 ### CommonJS
 
-- Available through npm as `vue-touch`. For Duo/Component you can isntall as `vuejs/vue-touch`.
+- Available through npm as `vue-touch`. For Duo/Component you can install as `vuejs/vue-touch`.
 
   ``` js
   var vueTouch = require('vue-touch')
