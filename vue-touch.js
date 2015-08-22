@@ -66,7 +66,9 @@
         // define new handler
         this.handler = function (e) {
           e.targetVM = vm
+          vm.$event = e
           fn.call(vm, e)
+          vm.$event = null
         }
         mc.on(event, this.handler)
       },
