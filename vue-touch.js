@@ -4,3 +4,8 @@ var isNotSet = require('is-not-set');
 var allege = require('allege');
 var arrayUnique = require('array-uniq');
 var isFunction = require('is-function');
+
+var supportedDirectives = [
+	'swipe-left'
+];
+
