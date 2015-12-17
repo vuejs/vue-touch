@@ -10,7 +10,11 @@
   },
   "bugs": "https://github.com/vuejs/vue-touch/issues",
   "dependencies": {
-    "hammerjs": "^2.0.1"
+    "allege": "^1.0.1",
+    "array-uniq": "^1.0.2",
+    "hammerjs": "^2.0.1",
+    "is-function": "^1.0.1",
+    "is-not-set": "^1.0.0"
   },
   "devDependencies": {
     "vue": "^0.10.5"
