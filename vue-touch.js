@@ -94,6 +94,35 @@ function registerTapDirective() {
 		}
 	});
 }
+
+function registerPressDownDirective() {
+	Vue.directive('press-down', {
+		bind: function () {
+		},
+		update: function (newValue, oldValue) {
+			if (isNotSet(this.value)) {
+				throw new ReferenceError(
+					'This directive is designed to be used with a callback. e.g. \'v-press-down="nameOfCallback"\''
+				)
+			}
+			if (isFunction(this.value) === false) {
+				throw new TypeError(
+					'Argument callback was not of required type Function'
+				)
+			}
+			var element = this.el;
+			var hammerListener = new Hammer(element);
+			hammerListener.off('press');
+			hammerListener.on('press', this.value);
+		},
+		unbind: function () {
+			var element = this.el;
+			var hammerListener = new Hammer(element);
+			hammerListener.off('press');
+		}
+	});
+}
+
 /**
  *
  * @param {Array.<*>} arrayInput - the array to compare
