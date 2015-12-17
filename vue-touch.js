@@ -9,11 +9,9 @@ var supportedDirectives = [
 	'swipe-left',
 	'swipe-right',
 	'tap',
-	'press-down',
-	'press-up'
+	'long-press-down',
+	'long-press-up'
 ];
-
-/**
 
 function registerLeftSwipeDirective() {
 	Vue.directive('swipe-left', {
@@ -100,13 +98,13 @@ function registerTapDirective() {
 }
 
 function registerPressDownDirective() {
-	Vue.directive('press-down', {
+	Vue.directive('long-press-down', {
 		bind: function () {
 		},
 		update: function (newValue, oldValue) {
 			if (isNotSet(this.value)) {
 				throw new ReferenceError(
-					'This directive is designed to be used with a callback. e.g. \'v-press-down="nameOfCallback"\''
+					'This directive is designed to be used with a callback. e.g. \'v-long-press-down="nameOfCallback"\''
 				)
 			}
 			if (isFunction(this.value) === false) {
@@ -128,13 +126,13 @@ function registerPressDownDirective() {
 }
 
 function registerPressUpDirective() {
-	Vue.directive('press-up', {
+	Vue.directive('long-press-up', {
 		bind: function () {
 		},
 		update: function (newValue, oldValue) {
 			if (isNotSet(this.value)) {
 				throw new ReferenceError(
-					'This directive is designed to be used with a callback. e.g. \'v-press-up="nameOfCallback"\''
+					'This directive is designed to be used with a callback. e.g. \'v-long-press-up="nameOfCallback"\''
 				)
 			}
 			if (isFunction(this.value) === false) {
@@ -201,10 +199,10 @@ function init(directivesToEnable) {
 	if (directivesToEnable.indexOf('tap') !== -1) {
 		registerTapDirective();
 	}
-	if (directivesToEnable.indexOf('press-down') !== -1) {
+	if (directivesToEnable.indexOf('long-press-down') !== -1) {
 		registerPressDownDirective();
 	}
-	if (directivesToEnable.indexOf('press-up') !== -1) {
+	if (directivesToEnable.indexOf('long-press-up') !== -1) {
 		registerPressUpDirective();
 	}
 }
