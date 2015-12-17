@@ -5,14 +5,6 @@ var allege = require('allege');
 var arrayUnique = require('array-uniq');
 var isFunction = require('is-function');
 
-var supportedDirectives = [
-	'swipe-left',
-	'swipe-right',
-	'tap',
-	'long-press-down',
-	'long-press-up'
-];
-
 /**
  * For when we need to call a function, but nothing needs to happen from it.
  */
@@ -29,6 +21,8 @@ var hammerDirectiveMapping = {
 	'long-press-down': 'press',
 	'long-press-up': 'pressup'
 };
+
+var supportedDirectives = Object.keys(hammerDirectiveMapping);
 
 /**
  * @param {string} directiveName
