@@ -6,8 +6,14 @@
 </head>
 <body>
     <div
-        style="height: 1000px; width: 1000px; background-color: red;"
-        v-swipe-left="callback">
+        style="height: 1000px; width: 1000px; background-color: red; position: fixed;"
+        v-swipe-left="callback"
+        v-swipe-right="callback"
+		v-tap="callback"
+		v-press-down="callback"
+		v-press-up="callback"
+		>
+
 
     </div>
 </body>
