@@ -22,9 +22,15 @@ var hammerDirectiveMapping = {
 	'long-press-up': 'pressup'
 };
 
+/**
+ * @type {Array.<string>}
+ */
 var supportedDirectives = Object.keys(hammerDirectiveMapping);
 
 /**
+ * This function does the actual hard work of creating a usable Vue directive, based on the list of supported directives
+ * in {@link supportedDirectives}. Uses `Hammer` to do the heavy lifting.
+ *
  * @param {string} directiveName
  */
 function registerTouchDirective(directiveName) {
