@@ -14,6 +14,11 @@ var supportedDirectives = [
 ];
 
 /**
+ * For when we need to call a function, but nothing needs to happen from it.
+ */
+function noop() {}
+
+/**
  * An hash representing the gesture event names that `Hammer` can listen for, and which ones are used for each directive
  * @type {Object}
  */
@@ -30,8 +35,7 @@ function registerLeftSwipeDirective() {
 	var hammerEventName = hammerDirectiveMapping[directiveName];
 
 	Vue.directive(directiveName, {
-		bind: function () {
-		},
+		bind: noop,
 		update: function (newValue, oldValue) {
 			var callbackFn = this.vm.$options.methods[this.expression];
 
@@ -63,8 +67,7 @@ function registerRightSwipeDirective() {
 	var hammerEventName = hammerDirectiveMapping[directiveName];
 
 	Vue.directive(directiveName, {
-		bind: function () {
-		},
+		bind: noop,
 		update: function (newValue, oldValue) {
 						var callbackFn = this.vm.$options.methods[this.expression];
 
@@ -96,8 +99,7 @@ function registerTapDirective() {
 	var hammerEventName = hammerDirectiveMapping[directiveName];
 
 	Vue.directive(directiveName, {
-		bind: function () {
-		},
+		bind: noop,
 		update: function (newValue, oldValue) {
 						var callbackFn = this.vm.$options.methods[this.expression];
 
@@ -129,8 +131,7 @@ function registerPressDownDirective() {
 	var hammerEventName = hammerDirectiveMapping[directiveName];
 
 	Vue.directive(directiveName, {
-		bind: function () {
-		},
+		bind: noop,
 		update: function (newValue, oldValue) {
 						var callbackFn = this.vm.$options.methods[this.expression];
 
@@ -162,8 +163,7 @@ function registerPressUpDirective() {
 	var hammerEventName = hammerDirectiveMapping[directiveName];
 
 	Vue.directive(directiveName, {
-		bind: function () {
-		},
+		bind: noop,
 		update: function (newValue, oldValue) {
 						var callbackFn = this.vm.$options.methods[this.expression];
 
