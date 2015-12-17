@@ -30,8 +30,10 @@ var hammerDirectiveMapping = {
 	'long-press-up': 'pressup'
 };
 
-function registerLeftSwipeDirective() {
-	var directiveName = 'swipe-left';
+/**
+ * @param {string} directiveName
+ */
+function registerTouchDirective(directiveName) {
 	var hammerEventName = hammerDirectiveMapping[directiveName];
 
 	Vue.directive(directiveName, {
@@ -42,134 +44,6 @@ function registerLeftSwipeDirective() {
 			if (isNotSet(callbackFn)) {
 				throw new ReferenceError(
 					'This directive is designed to be used with a callback. e.g. \'v-swipe-left="nameOfCallback"\''
-				)
-			}
-			if (isFunction(callbackFn) === false) {
-				throw new TypeError(
-					'Argument callback was not of required type Function'
-				)
-			}
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off(hammerEventName);
-			hammerListener.on(hammerEventName, callbackFn);
-		},
-		unbind: function () {
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off(hammerEventName);
-		}
-	});
-}
-
-function registerRightSwipeDirective() {
-	var directiveName = 'swipe-right';
-	var hammerEventName = hammerDirectiveMapping[directiveName];
-
-	Vue.directive(directiveName, {
-		bind: noop,
-		update: function (newValue, oldValue) {
-						var callbackFn = this.vm.$options.methods[this.expression];
-
-			if (isNotSet(callbackFn)) {
-				throw new ReferenceError(
-					'This directive is designed to be used with a callback. e.g. \'v-swipe-right="nameOfCallback"\''
-				)
-			}
-			if (isFunction(callbackFn) === false) {
-				throw new TypeError(
-					'Argument callback was not of required type Function'
-				)
-			}
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off(hammerEventName);
-			hammerListener.on(hammerEventName, callbackFn);
-		},
-		unbind: function () {
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off(hammerEventName);
-		}
-	});
-}
-
-function registerTapDirective() {
-	var directiveName = 'tap';
-	var hammerEventName = hammerDirectiveMapping[directiveName];
-
-	Vue.directive(directiveName, {
-		bind: noop,
-		update: function (newValue, oldValue) {
-						var callbackFn = this.vm.$options.methods[this.expression];
-
-			if (isNotSet(callbackFn)) {
-				throw new ReferenceError(
-					'This directive is designed to be used with a callback. e.g. \'v-tap="nameOfCallback"\''
-				)
-			}
-			if (isFunction(callbackFn) === false) {
-				throw new TypeError(
-					'Argument callback was not of required type Function'
-				)
-			}
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off(hammerEventName);
-			hammerListener.on(hammerEventName, callbackFn);
-		},
-		unbind: function () {
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off(hammerEventName);
-		}
-	});
-}
-
-function registerPressDownDirective() {
-	var directiveName = 'long-press-down';
-	var hammerEventName = hammerDirectiveMapping[directiveName];
-
-	Vue.directive(directiveName, {
-		bind: noop,
-		update: function (newValue, oldValue) {
-						var callbackFn = this.vm.$options.methods[this.expression];
-
-			if (isNotSet(callbackFn)) {
-				throw new ReferenceError(
-					'This directive is designed to be used with a callback. e.g. \'v-long-press-down="nameOfCallback"\''
-				)
-			}
-			if (isFunction(callbackFn) === false) {
-				throw new TypeError(
-					'Argument callback was not of required type Function'
-				)
-			}
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off(hammerEventName);
-			hammerListener.on(hammerEventName, callbackFn);
-		},
-		unbind: function () {
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off(hammerEventName);
-		}
-	});
-}
-
-function registerPressUpDirective() {
-	var directiveName = 'long-press-up';
-	var hammerEventName = hammerDirectiveMapping[directiveName];
-
-	Vue.directive(directiveName, {
-		bind: noop,
-		update: function (newValue, oldValue) {
-						var callbackFn = this.vm.$options.methods[this.expression];
-
-			if (isNotSet(callbackFn)) {
-				throw new ReferenceError(
-					'This directive is designed to be used with a callback. e.g. \'v-long-press-up="nameOfCallback"\''
 				)
 			}
 			if (isFunction(callbackFn) === false) {
@@ -228,23 +102,22 @@ function init(directivesToEnable) {
 		);
 	}
 	if (directivesToEnable.indexOf('swipe-left') !== -1) {
-		registerLeftSwipeDirective();
+		registerTouchDirective('swipe-left');
 	}
 	if (directivesToEnable.indexOf('swipe-right') !== -1) {
-		registerRightSwipeDirective();
+		registerTouchDirective('swipe-right');
 	}
 	if (directivesToEnable.indexOf('tap') !== -1) {
-		registerTapDirective();
+		registerTouchDirective('tap');
 	}
 	if (directivesToEnable.indexOf('long-press-down') !== -1) {
-		registerPressDownDirective();
+		registerTouchDirective('long-press-down');
 	}
 	if (directivesToEnable.indexOf('long-press-up') !== -1) {
-		registerPressUpDirective();
+		registerTouchDirective('long-press-up');
 	}
 }
 
 module.exports = {
 	init: init
 };
-
