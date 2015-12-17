@@ -14,10 +14,8 @@
     "array-uniq": "^1.0.2",
     "hammerjs": "^2.0.1",
     "is-function": "^1.0.1",
-    "is-not-set": "^1.0.0"
-  },
-  "devDependencies": {
-    "vue": "^0.10.5"
+    "is-not-set": "^1.0.0",
+    "vue": "^1.0.11"
   },
   "scripts": {
     "build": "browserify -e example/example.js -o example/example.build.js",

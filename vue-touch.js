@@ -5,150 +5,61 @@ var allege = require('allege');
 var arrayUnique = require('array-uniq');
 var isFunction = require('is-function');
 
-var supportedDirectives = [
-	'swipe-left',
-	'swipe-right',
-	'tap',
-	'long-press-down',
-	'long-press-up'
-];
+/**
+ * For when we need to call a function, but nothing needs to happen from it.
+ */
+function noop() {}
 
-function registerLeftSwipeDirective() {
-	Vue.directive('swipe-left', {
-		bind: function () {
-		},
+/**
+ * An hash representing the gesture event names that `Hammer` can listen for, and which ones are used for each directive
+ * @type {Object}
+ */
+var hammerDirectiveMapping = {
+	'swipe-left':      'swipeleft',
+	'swipe-right':     'swiperight',
+	'tap':             'tap',
+	'long-press-down': 'press',
+	'long-press-up':   'pressup'
+};
+
+/**
+ * @type {Array.<string>}
+ */
+var supportedDirectives = Object.keys(hammerDirectiveMapping);
+
+/**
+ * This function does the actual hard work of creating a usable Vue directive, based on the list of supported directives
+ * in {@link supportedDirectives}. Uses `Hammer` to do the heavy lifting.
+ *
+ * @param {string} directiveName
+ */
+function registerTouchDirective(directiveName) {
+	var hammerEventName = hammerDirectiveMapping[directiveName];
+
+	Vue.directive(directiveName, {
+		bind: noop,
 		update: function (newValue, oldValue) {
-			if (isNotSet(this.value)) {
+			var callbackFn = this.vm.$options.methods[this.expression];
+
+			if (isNotSet(callbackFn)) {
 				throw new ReferenceError(
 					'This directive is designed to be used with a callback. e.g. \'v-swipe-left="nameOfCallback"\''
 				)
 			}
-			if (isFunction(this.value) === false) {
+			if (isFunction(callbackFn) === false) {
 				throw new TypeError(
 					'Argument callback was not of required type Function'
 				)
 			}
 			var element = this.el;
 			var hammerListener = new Hammer(element);
-			hammerListener.off('swipeleft');
-			hammerListener.on('swipeleft', this.value);
+			hammerListener.off(hammerEventName);
+			hammerListener.on(hammerEventName, callbackFn);
 		},
 		unbind: function () {
 			var element = this.el;
 			var hammerListener = new Hammer(element);
-			hammerListener.off('swipeleft');
-		}
-	});
-}
-
-function registerRightSwipeDirective() {
-	Vue.directive('swipe-right', {
-		bind: function () {
-		},
-		update: function (newValue, oldValue) {
-			if (isNotSet(this.value)) {
-				throw new ReferenceError(
-					'This directive is designed to be used with a callback. e.g. \'v-swipe-right="nameOfCallback"\''
-				)
-			}
-			if (isFunction(this.value) === false) {
-				throw new TypeError(
-					'Argument callback was not of required type Function'
-				)
-			}
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off('swiperight');
-			hammerListener.on('swiperight', this.value);
-		},
-		unbind: function () {
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off('swiperight');
-		}
-	});
-}
-
-function registerTapDirective() {
-	Vue.directive('tap', {
-		bind: function () {
-		},
-		update: function (newValue, oldValue) {
-			if (isNotSet(this.value)) {
-				throw new ReferenceError(
-					'This directive is designed to be used with a callback. e.g. \'v-tap="nameOfCallback"\''
-				)
-			}
-			if (isFunction(this.value) === false) {
-				throw new TypeError(
-					'Argument callback was not of required type Function'
-				)
-			}
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off('tap');
-			hammerListener.on('tap', this.value);
-		},
-		unbind: function () {
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off('tap');
-		}
-	});
-}
-
-function registerPressDownDirective() {
-	Vue.directive('long-press-down', {
-		bind: function () {
-		},
-		update: function (newValue, oldValue) {
-			if (isNotSet(this.value)) {
-				throw new ReferenceError(
-					'This directive is designed to be used with a callback. e.g. \'v-long-press-down="nameOfCallback"\''
-				)
-			}
-			if (isFunction(this.value) === false) {
-				throw new TypeError(
-					'Argument callback was not of required type Function'
-				)
-			}
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off('press');
-			hammerListener.on('press', this.value);
-		},
-		unbind: function () {
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off('press');
-		}
-	});
-}
-
-function registerPressUpDirective() {
-	Vue.directive('long-press-up', {
-		bind: function () {
-		},
-		update: function (newValue, oldValue) {
-			if (isNotSet(this.value)) {
-				throw new ReferenceError(
-					'This directive is designed to be used with a callback. e.g. \'v-long-press-up="nameOfCallback"\''
-				)
-			}
-			if (isFunction(this.value) === false) {
-				throw new TypeError(
-					'Argument callback was not of required type Function'
-				)
-			}
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off('pressup');
-			hammerListener.on('pressup', this.value);
-		},
-		unbind: function () {
-			var element = this.el;
-			var hammerListener = new Hammer(element);
-			hammerListener.off('pressup');
+			hammerListener.off(hammerEventName);
 		}
 	});
 }
@@ -191,23 +102,22 @@ function init(directivesToEnable) {
 		);
 	}
 	if (directivesToEnable.indexOf('swipe-left') !== -1) {
-		registerLeftSwipeDirective();
+		registerTouchDirective('swipe-left');
 	}
 	if (directivesToEnable.indexOf('swipe-right') !== -1) {
-		registerRightSwipeDirective();
+		registerTouchDirective('swipe-right');
 	}
 	if (directivesToEnable.indexOf('tap') !== -1) {
-		registerTapDirective();
+		registerTouchDirective('tap');
 	}
 	if (directivesToEnable.indexOf('long-press-down') !== -1) {
-		registerPressDownDirective();
+		registerTouchDirective('long-press-down');
 	}
 	if (directivesToEnable.indexOf('long-press-up') !== -1) {
-		registerPressUpDirective();
+		registerTouchDirective('long-press-up');
 	}
 }
 
 module.exports = {
 	init: init
 };
-
