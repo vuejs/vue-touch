@@ -67,6 +67,33 @@ function registerRightSwipeDirective() {
 	});
 }
 
+function registerTapDirective() {
+	Vue.directive('tap', {
+		bind: function () {
+		},
+		update: function (newValue, oldValue) {
+			if (isNotSet(this.value)) {
+				throw new ReferenceError(
+					'This directive is designed to be used with a callback. e.g. \'v-tap="nameOfCallback"\''
+				)
+			}
+			if (isFunction(this.value) === false) {
+				throw new TypeError(
+					'Argument callback was not of required type Function'
+				)
+			}
+			var element = this.el;
+			var hammerListener = new Hammer(element);
+			hammerListener.off('tap');
+			hammerListener.on('tap', this.value);
+		},
+		unbind: function () {
+			var element = this.el;
+			var hammerListener = new Hammer(element);
+			hammerListener.off('tap');
+		}
+	});
+}
 /**
  *
  * @param {Array.<*>} arrayInput - the array to compare
