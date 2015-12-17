@@ -6,7 +6,11 @@ var arrayUnique = require('array-uniq');
 var isFunction = require('is-function');
 
 var supportedDirectives = [
-	'swipe-left'
+	'swipe-left',
+	'swipe-right',
+	'tap',
+	'press-down',
+	'press-up'
 ];
 
 /**
@@ -119,6 +123,34 @@ function registerPressDownDirective() {
 			var element = this.el;
 			var hammerListener = new Hammer(element);
 			hammerListener.off('press');
+		}
+	});
+}
+
+function registerPressUpDirective() {
+	Vue.directive('press-up', {
+		bind: function () {
+		},
+		update: function (newValue, oldValue) {
+			if (isNotSet(this.value)) {
+				throw new ReferenceError(
+					'This directive is designed to be used with a callback. e.g. \'v-press-up="nameOfCallback"\''
+				)
+			}
+			if (isFunction(this.value) === false) {
+				throw new TypeError(
+					'Argument callback was not of required type Function'
+				)
+			}
+			var element = this.el;
+			var hammerListener = new Hammer(element);
+			hammerListener.off('pressup');
+			hammerListener.on('pressup', this.value);
+		},
+		unbind: function () {
+			var element = this.el;
+			var hammerListener = new Hammer(element);
+			hammerListener.off('pressup');
 		}
 	});
 }
