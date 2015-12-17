@@ -1,12 +1,13 @@
 var Vue = require('vue');
 var vueTouch = require('../vue-touch.js');
 
+// Define the touch controls you wish to enable.
 vueTouch.init([
     'swipe-left',
 	'swipe-right',
 	'tap',
-	'press-down',
-	'press-up'
+	'long-press-down',
+	'long-press-up'
 ]);
 
 function callback() {
@@ -14,7 +15,7 @@ function callback() {
 }
 
 global.pageView = new Vue ({
-    el: 'div',
+    el: 'body',
     methods: {
         callback: callback
     }
