@@ -9,3 +9,13 @@ var supportedDirectives = [
 	'swipe-left'
 ];
 
+/**
+ *
+ * @param {Array.<String>} directivesToEnable - The directives you wish to enable.
+ */
+function init(directivesToEnable) {
+}
+
+module.exports = {
+	init: init
+};
