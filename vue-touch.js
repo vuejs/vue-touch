@@ -13,8 +13,23 @@ var supportedDirectives = [
 	'long-press-up'
 ];
 
+/**
+ * An hash representing the gesture event names that `Hammer` can listen for, and which ones are used for each directive
+ * @type {Object}
+ */
+var hammerDirectiveMapping = {
+	'swipe-left': 'swipeleft',
+	'swipe-right': 'swiperight',
+	'tap': 'tap',
+	'long-press-down': 'press',
+	'long-press-up': 'pressup'
+};
+
 function registerLeftSwipeDirective() {
-	Vue.directive('swipe-left', {
+	var directiveName = 'swipe-left';
+	var hammerEventName = hammerDirectiveMapping[directiveName];
+
+	Vue.directive(directiveName, {
 		bind: function () {
 		},
 		update: function (newValue, oldValue) {
@@ -32,19 +47,22 @@ function registerLeftSwipeDirective() {
 			}
 			var element = this.el;
 			var hammerListener = new Hammer(element);
-			hammerListener.off('swipeleft');
-			hammerListener.on('swipeleft', callbackFn);
+			hammerListener.off(hammerEventName);
+			hammerListener.on(hammerEventName, callbackFn);
 		},
 		unbind: function () {
 			var element = this.el;
 			var hammerListener = new Hammer(element);
-			hammerListener.off('swipeleft');
+			hammerListener.off(hammerEventName);
 		}
 	});
 }
 
 function registerRightSwipeDirective() {
-	Vue.directive('swipe-right', {
+	var directiveName = 'swipe-right';
+	var hammerEventName = hammerDirectiveMapping[directiveName];
+
+	Vue.directive(directiveName, {
 		bind: function () {
 		},
 		update: function (newValue, oldValue) {
@@ -62,19 +80,22 @@ function registerRightSwipeDirective() {
 			}
 			var element = this.el;
 			var hammerListener = new Hammer(element);
-			hammerListener.off('swiperight');
-			hammerListener.on('swiperight', callbackFn);
+			hammerListener.off(hammerEventName);
+			hammerListener.on(hammerEventName, callbackFn);
 		},
 		unbind: function () {
 			var element = this.el;
 			var hammerListener = new Hammer(element);
-			hammerListener.off('swiperight');
+			hammerListener.off(hammerEventName);
 		}
 	});
 }
 
 function registerTapDirective() {
-	Vue.directive('tap', {
+	var directiveName = 'tap';
+	var hammerEventName = hammerDirectiveMapping[directiveName];
+
+	Vue.directive(directiveName, {
 		bind: function () {
 		},
 		update: function (newValue, oldValue) {
@@ -92,19 +113,22 @@ function registerTapDirective() {
 			}
 			var element = this.el;
 			var hammerListener = new Hammer(element);
-			hammerListener.off('tap');
-			hammerListener.on('tap', callbackFn);
+			hammerListener.off(hammerEventName);
+			hammerListener.on(hammerEventName, callbackFn);
 		},
 		unbind: function () {
 			var element = this.el;
 			var hammerListener = new Hammer(element);
-			hammerListener.off('tap');
+			hammerListener.off(hammerEventName);
 		}
 	});
 }
 
 function registerPressDownDirective() {
-	Vue.directive('long-press-down', {
+	var directiveName = 'long-press-down';
+	var hammerEventName = hammerDirectiveMapping[directiveName];
+
+	Vue.directive(directiveName, {
 		bind: function () {
 		},
 		update: function (newValue, oldValue) {
@@ -122,19 +146,22 @@ function registerPressDownDirective() {
 			}
 			var element = this.el;
 			var hammerListener = new Hammer(element);
-			hammerListener.off('press');
-			hammerListener.on('press', callbackFn);
+			hammerListener.off(hammerEventName);
+			hammerListener.on(hammerEventName, callbackFn);
 		},
 		unbind: function () {
 			var element = this.el;
 			var hammerListener = new Hammer(element);
-			hammerListener.off('press');
+			hammerListener.off(hammerEventName);
 		}
 	});
 }
 
 function registerPressUpDirective() {
-	Vue.directive('long-press-up', {
+	var directiveName = 'long-press-up';
+	var hammerEventName = hammerDirectiveMapping[directiveName];
+
+	Vue.directive(directiveName, {
 		bind: function () {
 		},
 		update: function (newValue, oldValue) {
@@ -152,13 +179,13 @@ function registerPressUpDirective() {
 			}
 			var element = this.el;
 			var hammerListener = new Hammer(element);
-			hammerListener.off('pressup');
-			hammerListener.on('pressup', callbackFn);
+			hammerListener.off(hammerEventName);
+			hammerListener.on(hammerEventName, callbackFn);
 		},
 		unbind: function () {
 			var element = this.el;
 			var hammerListener = new Hammer(element);
-			hammerListener.off('pressup');
+			hammerListener.off(hammerEventName);
 		}
 	});
 }
