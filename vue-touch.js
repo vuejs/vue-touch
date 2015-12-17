@@ -15,11 +15,11 @@ function noop() {}
  * @type {Object}
  */
 var hammerDirectiveMapping = {
-	'swipe-left': 'swipeleft',
-	'swipe-right': 'swiperight',
-	'tap': 'tap',
+	'swipe-left':      'swipeleft',
+	'swipe-right':     'swiperight',
+	'tap':             'tap',
 	'long-press-down': 'press',
-	'long-press-up': 'pressup'
+	'long-press-up':   'pressup'
 };
 
 /**
