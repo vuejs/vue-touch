@@ -18,12 +18,14 @@ function registerLeftSwipeDirective() {
 		bind: function () {
 		},
 		update: function (newValue, oldValue) {
-			if (isNotSet(this.value)) {
+			var callbackFn = this.vm.$options.methods[this.expression];
+
+			if (isNotSet(callbackFn)) {
 				throw new ReferenceError(
 					'This directive is designed to be used with a callback. e.g. \'v-swipe-left="nameOfCallback"\''
 				)
 			}
-			if (isFunction(this.value) === false) {
+			if (isFunction(callbackFn) === false) {
 				throw new TypeError(
 					'Argument callback was not of required type Function'
 				)
@@ -31,7 +33,7 @@ function registerLeftSwipeDirective() {
 			var element = this.el;
 			var hammerListener = new Hammer(element);
 			hammerListener.off('swipeleft');
-			hammerListener.on('swipeleft', this.value);
+			hammerListener.on('swipeleft', callbackFn);
 		},
 		unbind: function () {
 			var element = this.el;
@@ -46,12 +48,14 @@ function registerRightSwipeDirective() {
 		bind: function () {
 		},
 		update: function (newValue, oldValue) {
-			if (isNotSet(this.value)) {
+						var callbackFn = this.vm.$options.methods[this.expression];
+
+			if (isNotSet(callbackFn)) {
 				throw new ReferenceError(
 					'This directive is designed to be used with a callback. e.g. \'v-swipe-right="nameOfCallback"\''
 				)
 			}
-			if (isFunction(this.value) === false) {
+			if (isFunction(callbackFn) === false) {
 				throw new TypeError(
 					'Argument callback was not of required type Function'
 				)
@@ -59,7 +63,7 @@ function registerRightSwipeDirective() {
 			var element = this.el;
 			var hammerListener = new Hammer(element);
 			hammerListener.off('swiperight');
-			hammerListener.on('swiperight', this.value);
+			hammerListener.on('swiperight', callbackFn);
 		},
 		unbind: function () {
 			var element = this.el;
@@ -74,12 +78,14 @@ function registerTapDirective() {
 		bind: function () {
 		},
 		update: function (newValue, oldValue) {
-			if (isNotSet(this.value)) {
+						var callbackFn = this.vm.$options.methods[this.expression];
+
+			if (isNotSet(callbackFn)) {
 				throw new ReferenceError(
 					'This directive is designed to be used with a callback. e.g. \'v-tap="nameOfCallback"\''
 				)
 			}
-			if (isFunction(this.value) === false) {
+			if (isFunction(callbackFn) === false) {
 				throw new TypeError(
 					'Argument callback was not of required type Function'
 				)
@@ -87,7 +93,7 @@ function registerTapDirective() {
 			var element = this.el;
 			var hammerListener = new Hammer(element);
 			hammerListener.off('tap');
-			hammerListener.on('tap', this.value);
+			hammerListener.on('tap', callbackFn);
 		},
 		unbind: function () {
 			var element = this.el;
@@ -102,12 +108,14 @@ function registerPressDownDirective() {
 		bind: function () {
 		},
 		update: function (newValue, oldValue) {
-			if (isNotSet(this.value)) {
+						var callbackFn = this.vm.$options.methods[this.expression];
+
+			if (isNotSet(callbackFn)) {
 				throw new ReferenceError(
 					'This directive is designed to be used with a callback. e.g. \'v-long-press-down="nameOfCallback"\''
 				)
 			}
-			if (isFunction(this.value) === false) {
+			if (isFunction(callbackFn) === false) {
 				throw new TypeError(
 					'Argument callback was not of required type Function'
 				)
@@ -115,7 +123,7 @@ function registerPressDownDirective() {
 			var element = this.el;
 			var hammerListener = new Hammer(element);
 			hammerListener.off('press');
-			hammerListener.on('press', this.value);
+			hammerListener.on('press', callbackFn);
 		},
 		unbind: function () {
 			var element = this.el;
@@ -130,12 +138,14 @@ function registerPressUpDirective() {
 		bind: function () {
 		},
 		update: function (newValue, oldValue) {
-			if (isNotSet(this.value)) {
+						var callbackFn = this.vm.$options.methods[this.expression];
+
+			if (isNotSet(callbackFn)) {
 				throw new ReferenceError(
 					'This directive is designed to be used with a callback. e.g. \'v-long-press-up="nameOfCallback"\''
 				)
 			}
-			if (isFunction(this.value) === false) {
+			if (isFunction(callbackFn) === false) {
 				throw new TypeError(
 					'Argument callback was not of required type Function'
 				)
@@ -143,7 +153,7 @@ function registerPressUpDirective() {
 			var element = this.el;
 			var hammerListener = new Hammer(element);
 			hammerListener.off('pressup');
-			hammerListener.on('pressup', this.value);
+			hammerListener.on('pressup', callbackFn);
 		},
 		unbind: function () {
 			var element = this.el;
