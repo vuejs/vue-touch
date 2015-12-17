@@ -195,6 +195,18 @@ function init(directivesToEnable) {
 	if (directivesToEnable.indexOf('swipe-left') !== -1) {
 		registerLeftSwipeDirective();
 	}
+	if (directivesToEnable.indexOf('swipe-right') !== -1) {
+		registerRightSwipeDirective();
+	}
+	if (directivesToEnable.indexOf('tap') !== -1) {
+		registerTapDirective();
+	}
+	if (directivesToEnable.indexOf('press-down') !== -1) {
+		registerPressDownDirective();
+	}
+	if (directivesToEnable.indexOf('press-up') !== -1) {
+		registerPressUpDirective();
+	}
 }
 
 module.exports = {
