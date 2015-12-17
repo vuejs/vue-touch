@@ -10,6 +10,35 @@ var supportedDirectives = [
 ];
 
 /**
+
+function registerLeftSwipeDirective() {
+	Vue.directive('swipe-left', {
+		bind: function () {
+		},
+		update: function (newValue, oldValue) {
+			if (isNotSet(this.value)) {
+				throw new ReferenceError(
+					'This directive is designed to be used with a callback. e.g. \'v-swipe-left="nameOfCallback"\''
+				)
+			}
+			if (isFunction(this.value) === false) {
+				throw new TypeError(
+					'Argument callback was not of required type Function'
+				)
+			}
+			var element = this.el;
+			var hammerListener = new Hammer(element);
+			hammerListener.off('swipeleft');
+			hammerListener.on('swipeleft', this.value);
+		},
+		unbind: function () {
+			var element = this.el;
+			var hammerListener = new Hammer(element);
+			hammerListener.off('swipeleft');
+		}
+	});
+}
+
 /**
  *
  * @param {Array.<*>} arrayInput - the array to compare
@@ -47,8 +76,12 @@ function init(directivesToEnable) {
 			'You are trying to enable directives multiple times in "directivesToEnable". Please make directives unique'
 		);
 	}
+	if (directivesToEnable.indexOf('swipe-left') !== -1) {
+		registerLeftSwipeDirective();
+	}
 }
 
 module.exports = {
 	init: init
 };
+
