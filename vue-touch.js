@@ -112,6 +112,6 @@ function install(Vue, options) {
 	}
 }
 
-module.exports = {
-	init: init
+var vueTouch = {
+	install: install
 };
