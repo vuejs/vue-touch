@@ -69,17 +69,19 @@ function areAllArrayItemsUnique(arrayInput) {
 
 /**
  *
- * @param {Array.<String>} directivesToEnable - The directives you wish to enable.
+ * @param Vue - The plugin to enable
+ * @param {Object} options - an object with the options to enable.
  */
-function init(directivesToEnable) {
+function install(Vue, options) {
+	var directivesToEnable = options.directivesToEnable;
 	if (isNotSet(directivesToEnable)) {
-		throw new ReferenceError('Required argument "directivesToEnable" was not set.');
+		throw new ReferenceError('Required argument "options.directivesToEnable" was not set.');
 	}
 	if (Array.isArray(directivesToEnable) === false) {
-		throw new TypeError('Argument "directivesToEnable" was not of required type Array');
+		throw new TypeError('Argument "options.directivesToEnable" was not of required type Array');
 	}
 	if (directivesToEnable.length === 0) {
-		throw new RangeError('"directivesToEnable" was passed an empty array');
+		throw new RangeError('"options.directivesToEnable" was passed an empty array');
 	}
 	directivesToEnable.forEach(function(directive) {
 		if (allege(directive).isNoneOf.apply(this, supportedDirectives)) {
