@@ -105,3 +105,15 @@ function install(Vue, options) {
 var vueTouch = {
 	install: install
 };
+
+if (typeof exports == "object") {
+	module.exports = vueTouch
+
+} else if (typeof define == "function" && define.amd) {
+	define([], function(){ return vueTouch })
+} else if (window.Vue) {
+	window.VueTouch = vueTouch;
+	Vue.use(vueTouch, {
+		directivesToEnable: supportedDirectives
+	})
+}
