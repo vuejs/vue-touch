@@ -6,11 +6,6 @@ var arrayUnique = require('array-uniq');
 var isFunction = require('is-function');
 
 /**
- * For when we need to call a function, but nothing needs to happen from it.
- */
-function noop() {}
-
-/**
  * An hash representing the gesture event names that `Hammer` can listen for, and which ones are used for each directive
  * @type {Object}
  */
@@ -37,10 +32,7 @@ function registerTouchDirective(directiveName) {
 	var hammerEventName = hammerDirectiveMapping[directiveName];
 
 	Vue.directive(directiveName, {
-		bind: noop,
-		update: function (newValue, oldValue) {
-			var callbackFn = this.vm.$options.methods[this.expression];
-
+		update: function (callbackFn) {
 			if (isNotSet(callbackFn)) {
 				throw new ReferenceError(
 					'This directive is designed to be used with a callback. e.g. \'v-swipe-left="nameOfCallback"\''
