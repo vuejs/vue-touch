@@ -8,38 +8,45 @@ This is a directive wrapper for Hammer.js 2.0.
 
 ### CommonJS
 
-- Available through npm as `vue-touch`. For Duo/Component you can install as `vuejs/vue-touch`.
+- Available through npm as `vue-touch`.
+- No touch directives are enabled by default, they need to be passed in using the options object.
+- You do not have to use all of them, just pick the ones you want.
 
   ``` js
   var vueTouch = require('vue-touch')
-  Vue.use(vueTouch)
+  var options = {
+  	directivesToEnable: [
+  		'swipe-left',
+		'swipe-right',
+		'tap',
+		'long-press-down',
+		'long-press-up'
+  	]
+  }
+  Vue.use(vueTouch, options)
   ```
 
 ### Direct include
 
-- You can also directly include it with a `<script>` tag when you have Vue itself included globally. It will automatically install itself, and will add a global `VueTouch`.
+- You can also directly include it with a `<script>` tag when you have Vue itself included globally.
+It will automatically install itself, and will add a global `VueTouch`. Using this method, all of the
+touch directives will be enabled by default.
 
 ### Use in templates
 
 Then you can do this:
 
 ``` html
-<a v-touch="tap:onTap">Tap me!</a>
+<div v-swipe-left="nameOfCallback">Swipe Left On Me</div>
 ```
+
+- `nameOfCallback` must be a function which needs to be made available to the Vue instance in `methods`
 
 ### Register a custom event
 
-``` js
-// example registering a custom doubletap event.
-// the `type` indicates the base recognizer to use from Hammer
-// all other options are Hammer recognizer options.
-VueTouch.registerCustomEvent('doubletap', {
-  type: 'tap',
-  taps: 2
-})
-```
+Coming soon.
 
-See [Hammer.js documentation](http://hammerjs.github.io/getting-started/) for all available events.
+### Example
 
 See `/example` for a multi-event demo. To build the example, you need to have Browserify installed and then `npm run build`.
 

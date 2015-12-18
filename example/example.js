@@ -1,25 +1,26 @@
-var Vue = require('vue')
-var VueTouch = require('../')
+var Vue = require('vue');
+var vueTouch = require('../vue-touch.js');
 
-// use the plugin
-Vue.use(VueTouch)
+//Enable the plugin with the plugin name and the touch directives to enable.
+Vue.use(vueTouch, {
+	directivesToEnable: [
+		'swipe-left',
+		'swipe-right',
+		'tap',
+		'long-press-down',
+		'long-press-up'
+	]
+});
 
-// example registering a custom doubletap event.
-// the `type` indicates the base recognizer to use from Hammer
-// all other options are Hammer recognizer options.
-VueTouch.registerCustomEvent('doubletap', {
-  type: 'tap',
-  taps: 2
-})
 
-new Vue({
-  el: 'div',
-  data: {
-    event: ''
-  },
-  methods: {
-    test: function (e) {
-      this.event = e.type
+function callback() {
+    alert('hello');
+}
+
+global.pageView = new Vue ({
+    el: 'body',
+    methods: {
+        callback: callback
     }
-  }
-})
+});
+

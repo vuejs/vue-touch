@@ -1,112 +1,119 @@
-;(function () {
+var Hammer = require('hammerjs');
+var Vue = require('vue');
+var isNotSet = require('is-not-set');
+var allege = require('allege');
+var arrayUnique = require('array-uniq');
+var isFunction = require('is-function');
 
-  var vueTouch = {}
-  var Hammer = typeof require === 'function'
-    ? require('hammerjs')
-    : window.Hammer
-  var gestures = ['tap', 'pan', 'pinch', 'press', 'rotate', 'swipe']
-  var customeEvents = {}
+/**
+ * An hash representing the gesture event names that `Hammer` can listen for, and which ones are used for each directive
+ * @type {Object}
+ */
+var hammerDirectiveMapping = {
+	'swipe-left':      'swipeleft',
+	'swipe-right':     'swiperight',
+	'tap':             'tap',
+	'long-press-down': 'press',
+	'long-press-up':   'pressup'
+};
 
-  vueTouch.install = function (Vue) {
+/**
+ * @type {Array.<string>}
+ */
+var supportedDirectives = Object.keys(hammerDirectiveMapping);
 
-    Vue.directive('touch', {
+/**
+ * This function does the actual hard work of creating a usable Vue directive, based on the list of supported directives
+ * in {@link supportedDirectives}. Uses `Hammer` to do the heavy lifting.
+ *
+ * @param {string} directiveName
+ */
+function registerTouchDirective(directiveName) {
+	var hammerEventName = hammerDirectiveMapping[directiveName];
 
-      isFn: true,
-      acceptStatement: true,
+	Vue.directive(directiveName, {
+		update: function (callbackFn) {
+			if (isNotSet(callbackFn)) {
+				throw new ReferenceError(
+					'This directive is designed to be used with a callback. e.g. \'v-swipe-left="nameOfCallback"\''
+				)
+			}
+			if (isFunction(callbackFn) === false) {
+				throw new TypeError(
+					'Argument callback was not of required type Function'
+				)
+			}
+			var element = this.el;
+			var hammerListener = new Hammer(element);
+			hammerListener.off(hammerEventName);
+			hammerListener.on(hammerEventName, callbackFn);
+		},
+		unbind: function () {
+			var element = this.el;
+			var hammerListener = new Hammer(element);
+			hammerListener.off(hammerEventName);
+		}
+	});
+}
 
-      bind: function () {
-        if (!this.el.hammer) {
-          this.el.hammer = new Hammer.Manager(this.el)
-        }
-        var mc = this.mc = this.el.hammer
-        // determine event type
-        var event = this.arg
-        var recognizerType, recognizer
+/**
+ *
+ * @param {Array.<*>} arrayInput - the array to compare
+ * @returns {boolean}
+ */
+function areAllArrayItemsUnique(arrayInput) {
+	var uniqueArrayLength = arrayUnique(arrayInput).length;
+	var rawArrayLength = arrayInput.length;
+	return uniqueArrayLength === rawArrayLength;
+}
 
-        if (customeEvents[event]) { // custom event
+/**
+ *
+ * @param Vue - The plugin to enable
+ * @param {Object} options - an object with the options to enable.
+ */
+function install(Vue, options) {
+	var directivesToEnable = options.directivesToEnable;
+	if (isNotSet(directivesToEnable)) {
+		throw new ReferenceError('Required argument "options.directivesToEnable" was not set.');
+	}
+	if (Array.isArray(directivesToEnable) === false) {
+		throw new TypeError('Argument "options.directivesToEnable" was not of required type Array');
+	}
+	if (directivesToEnable.length === 0) {
+		throw new RangeError('"options.directivesToEnable" was passed an empty array');
+	}
+	directivesToEnable.forEach(function(directive) {
+		if (allege(directive).isNoneOf.apply(this, supportedDirectives)) {
+			throw new RangeError(
+				directive + ' is not a supported directive. Supported directives are ' + supportedDirectives
+			)
+		}
+	});
+	if (areAllArrayItemsUnique(directivesToEnable) === false) {
+		console.warn(
+			'You are trying to enable directives multiple times in "options.directivesToEnable". Please make directives unique'
+		);
+	}
+	arrayUnique(directivesToEnable).forEach(function(directive) {
+		if (allege(directive).isAnyOf.apply(this, supportedDirectives)) {
+			registerTouchDirective(directive);
+		}
+	});
+}
 
-          var custom = customeEvents[event]
-          recognizerType = custom.type
-          recognizer = new Hammer[capitalize(recognizerType)](custom)
-          recognizer.recognizeWith(mc.recognizers)
-          mc.add(recognizer)
+var vueTouch = {
+	install: install
+};
 
-        } else { // built-in event
+if (typeof exports == "object") {
+	module.exports = vueTouch
 
-          for (var i = 0; i < gestures.length; i++) {
-            if (event.indexOf(gestures[i]) === 0) {
-              recognizerType = gestures[i]
-              break
-            }
-          }
-          if (!recognizerType) {
-            console.warn('Invalid v-touch event: ' + event)
-            return
-          }
-          recognizer = mc.get(recognizerType)
-          if (!recognizer) {
-            // add recognizer
-            recognizer = new Hammer[capitalize(recognizerType)]()
-            // make sure multiple recognizers work together...
-            recognizer.recognizeWith(mc.recognizers)
-            mc.add(recognizer)
-          }
-
-        }
-      },
-
-      update: function (fn) {
-        var mc = this.mc
-        var vm = this.vm
-        var event = this.arg
-        // teardown old handler
-        if (this.handler) {
-          mc.off(event, this.handler)
-        }
-        // define new handler
-        this.handler = function (e) {
-          e.targetVM = vm
-          fn.call(vm, e)
-        }
-        mc.on(event, this.handler)
-      },
-
-      unbind: function () {
-        this.mc.off(this.arg, this.handler)
-        if (!Object.keys(this.mc.handlers).length) {
-          this.mc.destroy()
-          this.el.hammer = null
-        }
-      }
-
-    })
-  }
-
-  /**
-   * Register a custom event.
-   *
-   * @param {String} event
-   * @param {Object} options - a Hammer.js recognizer option object.
-   *                           required fields:
-   *                           - type: the base recognizer to use for this event
-   */
-
-  vueTouch.registerCustomEvent = function (event, options) {
-    options.event = event
-    customeEvents[event] = options
-  }
-
-  function capitalize (str) {
-    return str.charAt(0).toUpperCase() + str.slice(1)
-  }
-
-  if (typeof exports == "object") {
-    module.exports = vueTouch
-  } else if (typeof define == "function" && define.amd) {
-    define([], function(){ return vueTouch })
-  } else if (window.Vue) {
-    window.VueTouch = vueTouch
-    Vue.use(vueTouch)
-  }
-
-})()
+} else if (typeof define == "function" && define.amd) {
+	define([], function(){ return vueTouch })
+} else if (window.Vue) {
+	window.VueTouch = vueTouch;
+	Vue.use(vueTouch, {
+		directivesToEnable: supportedDirectives
+	})
+}
