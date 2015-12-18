@@ -92,24 +92,14 @@ function install(Vue, options) {
 	});
 	if (areAllArrayItemsUnique(directivesToEnable) === false) {
 		console.warn(
-			'You are trying to enable directives multiple times in "directivesToEnable". Please make directives unique'
+			'You are trying to enable directives multiple times in "options.directivesToEnable". Please make directives unique'
 		);
 	}
-	if (directivesToEnable.indexOf('swipe-left') !== -1) {
-		registerTouchDirective('swipe-left');
-	}
-	if (directivesToEnable.indexOf('swipe-right') !== -1) {
-		registerTouchDirective('swipe-right');
-	}
-	if (directivesToEnable.indexOf('tap') !== -1) {
-		registerTouchDirective('tap');
-	}
-	if (directivesToEnable.indexOf('long-press-down') !== -1) {
-		registerTouchDirective('long-press-down');
-	}
-	if (directivesToEnable.indexOf('long-press-up') !== -1) {
-		registerTouchDirective('long-press-up');
-	}
+	arrayUnique(directivesToEnable).forEach(function(directive) {
+		if (allege(directive).isAnyOf.apply(this, supportedDirectives)) {
+			registerTouchDirective(directive);
+		}
+	});
 }
 
 var vueTouch = {
