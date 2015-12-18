@@ -1,14 +1,17 @@
 var Vue = require('vue');
 var vueTouch = require('../vue-touch.js');
 
-// Define the touch controls you wish to enable.
-vueTouch.init([
-    'swipe-left',
-	'swipe-right',
-	'tap',
-	'long-press-down',
-	'long-press-up'
-]);
+//Enable the plugin with the plugin name and the touch directives to enable.
+Vue.use(vueTouch, {
+	directivesToEnable: [
+		'swipe-left',
+		'swipe-right',
+		'tap',
+		'long-press-down',
+		'long-press-up'
+	]
+});
+
 
 function callback() {
     alert('hello');
