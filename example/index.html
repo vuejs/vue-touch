@@ -6,14 +6,13 @@
     }
 </style>
 
-<div v-touch="
-  tap:test,
-  pan:test,
-  press:test,
-  swipe:test,
-  pinch:test,
-  rotate:test,
-  doubletap: test
-" v-text="event"></div>
+<div v-touch:tap="test"
+     v-touch:pan="test"
+     v-touch:press="test"
+     v-touch:swipe="test"
+     v-touch:pinch="test"
+     v-touch:rotate="test"
+     v-touch:doubletap="test"
+     v-text="event"></div>
 
 <script src="example.build.js"></script>
