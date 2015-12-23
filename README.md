@@ -24,7 +24,7 @@ This is a directive wrapper for Hammer.js 2.0.
 Then you can do this:
 
 ``` html
-<a v-touch="tap:onTap">Tap me!</a>
+<a v-touch:tap="onTap">Tap me!</a>
 ```
 
 ### Register a custom event
