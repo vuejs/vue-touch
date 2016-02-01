@@ -8,23 +8,23 @@ This is a directive wrapper for Hammer.js 2.0.
 
 ### CommonJS
 
-- Available through npm as `vue-touch`. For Duo/Component you can install as `vuejs/vue-touch`.
+- Available through npm as `vue-touch`.
 
   ``` js
-  var vueTouch = require('vue-touch')
-  Vue.use(vueTouch)
+  var VueTouch = require('vue-touch')
+  Vue.use(VueTouch)
   ```
 
 ### Direct include
 
-- You can also directly include it with a `<script>` tag when you have Vue itself included globally. It will automatically install itself, and will add a global `VueTouch`.
+- You can also directly include it with a `<script>` tag when you have Vue and Hammer.js already included globally. It will automatically install itself, and will add a global `VueTouch`.
 
-### Use in templates
+### Using the `v-touch` directive
 
 Then you can do this:
 
 ``` html
-<a v-touch="tap:onTap">Tap me!</a>
+<a v-touch:tap="onTap">Tap me!</a>
 ```
 
 ### Register a custom event
@@ -41,7 +41,7 @@ VueTouch.registerCustomEvent('doubletap', {
 
 See [Hammer.js documentation](http://hammerjs.github.io/getting-started/) for all available events.
 
-See `/example` for a multi-event demo. To build the example, you need to have Browserify installed and then `npm run build`.
+See `/example` for a multi-event demo. To build it, run `npm install && npm run build`.
 
 ## License
 

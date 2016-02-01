@@ -7,6 +7,10 @@
   var gestures = ['tap', 'pan', 'pinch', 'press', 'rotate', 'swipe']
   var customeEvents = {}
 
+  if (!Hammer) {
+    throw new Error('[vue-touch] cannot locate Hammer.js.')
+  }
+
   vueTouch.install = function (Vue) {
 
     Vue.directive('touch', {
@@ -21,18 +25,20 @@
         var mc = this.mc = this.el.hammer
         // determine event type
         var event = this.arg
+        if (!event) {
+          console.warn('[vue-touch] event type argument is required.')
+        }
         var recognizerType, recognizer
 
-        if (customeEvents[event]) { // custom event
-
+        if (customeEvents[event]) {
+          // custom event
           var custom = customeEvents[event]
           recognizerType = custom.type
           recognizer = new Hammer[capitalize(recognizerType)](custom)
           recognizer.recognizeWith(mc.recognizers)
           mc.add(recognizer)
-
-        } else { // built-in event
-
+        } else {
+          // built-in event
           for (var i = 0; i < gestures.length; i++) {
             if (event.indexOf(gestures[i]) === 0) {
               recognizerType = gestures[i]
@@ -40,7 +46,7 @@
             }
           }
           if (!recognizerType) {
-            console.warn('Invalid v-touch event: ' + event)
+            console.warn('[vue-touch] invalid event type: ' + event)
             return
           }
           recognizer = mc.get(recognizerType)
@@ -51,7 +57,6 @@
             recognizer.recognizeWith(mc.recognizers)
             mc.add(recognizer)
           }
-
         }
       },
 
@@ -64,11 +69,8 @@
           mc.off(event, this.handler)
         }
         // define new handler
-        this.handler = function (e) {
-          e.targetVM = vm
-          fn.call(vm, e)
-        }
-        mc.on(event, this.handler)
+        this.handler = fn
+        mc.on(event, fn)
       },
 
       unbind: function () {
