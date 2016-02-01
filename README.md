@@ -4,9 +4,9 @@
 
 This is a directive wrapper for Hammer.js 2.0.
 
-## Usage
+## Install
 
-### CommonJS
+#### CommonJS
 
 - Available through npm as `vue-touch`.
 
@@ -15,19 +15,42 @@ This is a directive wrapper for Hammer.js 2.0.
   Vue.use(VueTouch)
   ```
 
-### Direct include
+#### Direct include
 
 - You can also directly include it with a `<script>` tag when you have Vue and Hammer.js already included globally. It will automatically install itself, and will add a global `VueTouch`.
 
-### Using the `v-touch` directive
+## Usage
 
-Then you can do this:
+#### Using the `v-touch` directive
 
 ``` html
 <a v-touch:tap="onTap">Tap me!</a>
+
+<div v-touch:swipeleft="onSwipeLeft">Swipe me!</div>
 ```
 
-### Register a custom event
+#### Configuring Recognizer Options
+
+There are two ways to customize recognizer options such as `direction` and `threshold`. The first one is setting global options:
+
+``` js
+// change the threshold for all swipe recognizers
+VueTouch.config.swipe = {
+  threshold: 200
+}
+```
+
+Or, you can use the `v-touch-options` directive to configure the behavior on a specific element:
+
+``` html
+<!-- detect panning up only with a threshold of 100 -->
+<a
+  v-touch:pan="onPan"
+  v-touch-options:pan="{ direction: 'up', threshold: 100 }">
+</a>
+```
+
+#### Registering Custom Events
 
 ``` js
 // example registering a custom doubletap event.
@@ -37,6 +60,9 @@ VueTouch.registerCustomEvent('doubletap', {
   type: 'tap',
   taps: 2
 })
+```
+``` html
+<a v-touch:doubletap="onDoubleTap"></a>
 ```
 
 See [Hammer.js documentation](http://hammerjs.github.io/getting-started/) for all available events.

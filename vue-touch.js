@@ -5,11 +5,15 @@
     ? require('hammerjs')
     : window.Hammer
   var gestures = ['tap', 'pan', 'pinch', 'press', 'rotate', 'swipe']
+  var directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical']
   var customeEvents = {}
 
   if (!Hammer) {
     throw new Error('[vue-touch] cannot locate Hammer.js.')
   }
+
+  // exposed global options
+  vueTouch.config = {}
 
   vueTouch.install = function (Vue) {
 
@@ -17,6 +21,7 @@
 
       isFn: true,
       acceptStatement: true,
+      priority: Vue.directive('on').priority,
 
       bind: function () {
         if (!this.el.hammer) {
@@ -57,7 +62,22 @@
             recognizer.recognizeWith(mc.recognizers)
             mc.add(recognizer)
           }
+          // apply global options
+          var globalOptions = vueTouch.config[recognizerType]
+          if (globalOptions) {
+            guardDirections(globalOptions)
+            recognizer.set(globalOptions)
+          }
+          // apply local options
+          var localOptions =
+            this.el.hammerOptions &&
+            this.el.hammerOptions[recognizerType]
+          if (localOptions) {
+            guardDirections(localOptions)
+            recognizer.set(localOptions)
+          }
         }
+        this.recognizer = recognizer
       },
 
       update: function (fn) {
@@ -68,9 +88,14 @@
         if (this.handler) {
           mc.off(event, this.handler)
         }
-        // define new handler
-        this.handler = fn
-        mc.on(event, fn)
+        if (typeof fn !== 'function') {
+          console.warn(
+            '[vue-touch] invalid handler function for v-touch:' +
+            this.arg + '="' + this.descriptor.raw
+          )
+        } else {
+          mc.on(event, fn)
+        }
       },
 
       unbind: function () {
@@ -80,7 +105,18 @@
           this.el.hammer = null
         }
       }
+    })
 
+    Vue.directive('touch-options', {
+      priority: Vue.directive('on').priority + 1,
+      update: function (options) {
+        var opts = this.el.hammerOptions || (this.el.hammerOptions = {})
+        if (!this.arg) {
+          console.warn('[vue-touch] recognizer type argument for v-touch-options is required.')
+        } else {
+          opts[this.arg] = options
+        }
+      }
     })
   }
 
@@ -100,6 +136,12 @@
 
   function capitalize (str) {
     return str.charAt(0).toUpperCase() + str.slice(1)
+  }
+
+  function guardDirections (options) {
+    if (typeof options.direction === 'string') {
+      options.direction = Hammer['DIRECTION_' + options.direction.toUpperCase()]
+    }
   }
 
   if (typeof exports == "object") {
