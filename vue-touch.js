@@ -90,7 +90,7 @@
         }
         if (typeof fn !== 'function') {
           console.warn(
-            '[vue-touch] invalid handler function for v-touch:' +
+            '[vue-touch] invalid handler function for v-touch: ' +
             this.arg + '="' + this.descriptor.raw
           )
         } else {
@@ -139,8 +139,13 @@
   }
 
   function guardDirections (options) {
-    if (typeof options.direction === 'string') {
-      options.direction = Hammer['DIRECTION_' + options.direction.toUpperCase()]
+    var dir = options.direction
+    if (typeof dir === 'string') {
+      if (directions.indexOf(dir) > -1) {
+        options.direction = Hammer['DIRECTION_' + dir.toUpperCase()]
+      } else {
+        console.warn('[vue-touch] invalid direction: ' + dir)
+      }
     }
   }
 

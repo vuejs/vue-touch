@@ -43,10 +43,10 @@ VueTouch.config.swipe = {
 Or, you can use the `v-touch-options` directive to configure the behavior on a specific element:
 
 ``` html
-<!-- detect panning up only with a threshold of 100 -->
+<!-- detect only horizontal pans with a threshold of 100 -->
 <a
   v-touch:pan="onPan"
-  v-touch-options:pan="{ direction: 'up', threshold: 100 }">
+  v-touch-options:pan="{ direction: 'horizontal', threshold: 100 }">
 </a>
 ```
 
