@@ -6,7 +6,7 @@
     : window.Hammer
   var gestures = ['tap', 'pan', 'pinch', 'press', 'rotate', 'swipe']
   var directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical']
-  var customeEvents = {}
+  var customEvents = {}
 
   if (!Hammer) {
     throw new Error('[vue-touch] cannot locate Hammer.js.')
@@ -35,9 +35,9 @@
         }
         var recognizerType, recognizer
 
-        if (customeEvents[event]) {
+        if (customEvents[event]) {
           // custom event
-          var custom = customeEvents[event]
+          var custom = customEvents[event]
           recognizerType = custom.type
           recognizer = new Hammer[capitalize(recognizerType)](custom)
           recognizer.recognizeWith(mc.recognizers)
@@ -131,7 +131,7 @@
 
   vueTouch.registerCustomEvent = function (event, options) {
     options.event = event
-    customeEvents[event] = options
+    customEvents[event] = options
   }
 
   function capitalize (str) {
