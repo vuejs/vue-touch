@@ -82,7 +82,6 @@
 
       update: function (fn) {
         var mc = this.mc
-        var vm = this.vm
         var event = this.arg
         // teardown old handler
         if (this.handler) {
