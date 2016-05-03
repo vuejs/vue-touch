@@ -88,17 +88,20 @@
           mc.off(event, this.handler)
         }
         if (typeof fn !== 'function') {
+          this.handler = null
           console.warn(
             '[vue-touch] invalid handler function for v-touch: ' +
             this.arg + '="' + this.descriptor.raw
           )
         } else {
-          mc.on(event, fn)
+          mc.on(event, (this.handler = fn))
         }
       },
 
       unbind: function () {
-        this.mc.off(this.arg, this.handler)
+        if (this.handler) {
+          this.mc.off(this.arg, this.handler)
+        }
         if (!Object.keys(this.mc.handlers).length) {
           this.mc.destroy()
           this.el.hammer = null
