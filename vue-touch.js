@@ -5,7 +5,7 @@
     ? require('hammerjs')
     : window.Hammer
   var gestures = ['tap', 'pan', 'pinch', 'press', 'rotate', 'swipe']
-  var directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical']
+  var directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical', 'all']
   var customEvents = {}
 
   if (!Hammer) {
@@ -140,8 +140,9 @@
   function guardDirections (options) {
     var dir = options.direction
     if (typeof dir === 'string') {
-      if (directions.indexOf(dir) > -1) {
-        options.direction = Hammer['DIRECTION_' + dir.toUpperCase()]
+      var hammerDirection = 'DIRECTION_' + dir.toUpperCase()
+      if (directions.indexOf(dir) > -1 && Hammer.hasOwnProperty(hammerDirection)) {
+        options.direction = Hammer[hammerDirection]
       } else {
         console.warn('[vue-touch] invalid direction: ' + dir)
       }
