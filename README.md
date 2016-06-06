@@ -71,4 +71,4 @@ See `/example` for a multi-event demo. To build it, run `npm install && npm run 
 
 ## License
 
-MIT
+[MIT](http://opensource.org/licenses/MIT)
