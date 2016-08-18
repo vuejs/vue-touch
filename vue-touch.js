@@ -109,20 +109,23 @@
     var handlers = cache.eventHandlers
     var event = binding.arg
 
-    // teardown old handler
+    // teardown old handler if there's a new one
     var oldHandler = handlers[event]
-    if (oldHandler) { // TODO where to buffer handler?
+    if (oldHandler && oldHandler !== fn) {
       mc.off(event, oldHandler)
       handlers[event] = null
-    }
-    if (typeof fn !== 'function') {
-      handlers[event] = null
-      console.warn(
-        '[vue-touch] invalid handler function for v-touch: ' +
-        this.arg + '="' + fn
-      )
-    } else {
-      mc.on(event, (handlers[event] = fn))
+
+    // if there's a new handler, add it
+    if (oldHandler !== fn) {
+      if (typeof fn === 'function') {
+        mc.on(event, (handlers[event] = fn))
+      } else {
+        handlers[event] = null
+        console.warn(
+          '[vue-touch] invalid handler function for v-touch: ' +
+          this.arg + '="' + fn
+        )
+      }
     }
   }
 
