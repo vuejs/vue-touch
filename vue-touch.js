@@ -19,14 +19,25 @@
 
     Vue.directive('touch', {
 
-
-      bind: function () {
-        if (!this.el.hammer) {
-          this.el.hammer = new Hammer.Manager(this.el)
+      bind: function (el, binding) {
+        //console.log(binding)
+        // setup cache object for
+        // instances and handler functions
+        if (!el.__vueTouch__) {
+          el.__vueTouch__ = {
+            mc: null,
+            eventHandlers: {}
+          }
         }
-        var mc = this.mc = this.el.hammer
+        var cache = el.__vueTouch__
+
+        if (!cache.mc) {
+          cache.mc = new Hammer.Manager(el)
+        }
+        var mc = cache.mc
+
         // determine event type
-        var event = this.arg
+        var event = binding.arg
         if (!event) {
           console.warn('[vue-touch] event type argument is required.')
         }
@@ -90,6 +101,7 @@
           //   recognizer.set(localOptions)
           // }
         }
+        update(el, binding)
       },
 
       unbind: function () {
