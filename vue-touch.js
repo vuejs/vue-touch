@@ -25,15 +25,11 @@
         // instances and handler functions
         if (!el.__vueTouch__) {
           el.__vueTouch__ = {
-            mc: null,
+            mc: new Hammer.Manager(el),
             eventHandlers: {}
           }
         }
         var cache = el.__vueTouch__
-
-        if (!cache.mc) {
-          cache.mc = new Hammer.Manager(el)
-        }
         var mc = cache.mc
 
         // determine event type
