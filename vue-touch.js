@@ -77,22 +77,6 @@
             recognizer.set(globalOptions)
           }
           // apply local options
-
-      update: function (fn) {
-        var mc = this.mc
-        var event = this.arg
-        // teardown old handler
-        if (this.handler) {
-          mc.off(event, this.handler)
-        }
-        if (typeof fn !== 'function') {
-          this.handler = null
-          console.warn(
-            '[vue-touch] invalid handler function for v-touch: ' +
-            this.arg + '="' + this.descriptor.raw
-          )
-        } else {
-          mc.on(event, (this.handler = fn))
           // var localOptions =
           //   this.el.mcOptions &&
           //   this.el.mcOptions[recognizerType]
@@ -107,6 +91,7 @@
       unbind: function () {
         if (this.handler) {
           this.mc.off(this.arg, this.handler)
+      update: update,
         }
         if (!Object.keys(this.mc.handlers).length) {
           this.mc.destroy()
@@ -114,7 +99,30 @@
         }
       }
     })
+  }
 
+  function update (el, binding) {
+    var fn = binding.value
+    var cache = el.__vueTouch__
+    var mc = cache.mc
+    var handlers = cache.eventHandlers
+    var event = binding.arg
+
+    // teardown old handler
+    var oldHandler = handlers[event]
+    if (oldHandler) { // TODO where to buffer handler?
+      mc.off(event, oldHandler)
+      handlers[event] = null
+    }
+    if (typeof fn !== 'function') {
+      handlers[event] = null
+      console.warn(
+        '[vue-touch] invalid handler function for v-touch: ' +
+        this.arg + '="' + fn
+      )
+    } else {
+      mc.on(event, (handlers[event] = fn))
+    }
   }
 
   /**
