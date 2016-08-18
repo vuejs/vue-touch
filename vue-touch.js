@@ -88,14 +88,27 @@
         update(el, binding)
       },
 
-      unbind: function () {
-        if (this.handler) {
-          this.mc.off(this.arg, this.handler)
       update: update,
+
+      unbind: function (el, binding) {
+        var cache = el.__vueTouch__
+        var mc = cache.mc
+        var handlers = cache.eventHandlers
+        //tear down old handler
+        var event = binding.arg
+        var oldHandler = handlers[event]
+        if (oldHandler) {
+          mc.off(binding.arg, oldHandler)
+          handlers[event] = null
         }
-        if (!Object.keys(this.mc.handlers).length) {
-          this.mc.destroy()
-          this.el.hammer = null
+        // if no more handlers left, destroy the hammer manager instance
+        var allHandlersGone = Object.keys(mc.handlers).every(function (key) {
+          return mc.handlers[key].length === 0
+        })
+        if (allHandlersGone) {
+          mc.destroy()
+          // cache.mc = null // do i need to do that?
+          el.__vueTouch__ = null
         }
       }
     })
