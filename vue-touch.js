@@ -19,9 +19,6 @@
 
     Vue.directive('touch', {
 
-      isFn: true,
-      acceptStatement: true,
-      priority: Vue.directive('on').priority,
 
       bind: function () {
         if (!this.el.hammer) {
