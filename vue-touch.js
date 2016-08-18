@@ -20,8 +20,8 @@
     Vue.directive('touch', {
 
       bind: function (el, binding) {
-        //console.log(binding)
-        // setup cache object for
+
+        // setup cache object for manager instance and
         // instances and handler functions
         if (!el.__vueTouch__) {
           el.__vueTouch__ = {
