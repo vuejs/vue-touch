@@ -72,14 +72,6 @@
             guardDirections(globalOptions)
             recognizer.set(globalOptions)
           }
-          // apply local options
-          // var localOptions =
-          //   this.el.mcOptions &&
-          //   this.el.mcOptions[recognizerType]
-          // if (localOptions) {
-          //   guardDirections(localOptions)
-          //   recognizer.set(localOptions)
-          // }
         }
         update(el, binding)
       },
