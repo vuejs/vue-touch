@@ -66,16 +66,6 @@
             recognizer.set(globalOptions)
           }
           // apply local options
-          var localOptions =
-            this.el.hammerOptions &&
-            this.el.hammerOptions[recognizerType]
-          if (localOptions) {
-            guardDirections(localOptions)
-            recognizer.set(localOptions)
-          }
-        }
-        this.recognizer = recognizer
-      },
 
       update: function (fn) {
         var mc = this.mc
@@ -92,6 +82,13 @@
           )
         } else {
           mc.on(event, (this.handler = fn))
+          // var localOptions =
+          //   this.el.mcOptions &&
+          //   this.el.mcOptions[recognizerType]
+          // if (localOptions) {
+          //   guardDirections(localOptions)
+          //   recognizer.set(localOptions)
+          // }
         }
       },
 
@@ -106,17 +103,6 @@
       }
     })
 
-    Vue.directive('touch-options', {
-      priority: Vue.directive('on').priority + 1,
-      update: function (options) {
-        var opts = this.el.hammerOptions || (this.el.hammerOptions = {})
-        if (!this.arg) {
-          console.warn('[vue-touch] recognizer type argument for v-touch-options is required.')
-        } else {
-          opts[this.arg] = options
-        }
-      }
-    })
   }
 
   /**
