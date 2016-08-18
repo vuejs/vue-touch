@@ -79,6 +79,7 @@
       update: update,
 
       unbind: function (el, binding) {
+
         var cache = el.__vueTouch__
         var mc = cache.mc
         var handlers = cache.eventHandlers
@@ -90,7 +91,7 @@
           mc.off(binding.arg, oldHandler)
           handlers[event] = null
         }
-
+        
         // if no more handlers left, destroy the hammer manager instance
         var allHandlersGone = Object.keys(mc.handlers).every(function (key) {
           return mc.handlers[key].length === 0
@@ -105,6 +106,7 @@
   }
 
   function update (el, binding) {
+
     var fn = binding.value
     var cache = el.__vueTouch__
     var mc = cache.mc
