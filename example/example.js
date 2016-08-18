@@ -12,14 +12,25 @@ VueTouch.registerCustomEvent('doubletap', {
   taps: 2
 })
 
-new Vue({
-  el: 'div',
-  data: {
-    event: ''
+var App = {
+  template: '#test',
+  data: function () {
+    return {
+      event: '',
+      show: true,
+    }
   },
   methods: {
+    toggle: function() {this.show = !this.show},
     test: function (e) {
       this.event = e.type
     }
   }
-})
+}
+
+new Vue({
+  components: { app: App },
+  render(h) {
+    return h(App)
+  }
+}).$mount('#app')
