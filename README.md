@@ -4,6 +4,8 @@
 
 This is a directive wrapper for Hammer.js 2.0.
 
+This version is only compatible with Vue 2.0.
+
 ## Install
 
 #### CommonJS
@@ -29,9 +31,20 @@ This is a directive wrapper for Hammer.js 2.0.
 <div v-touch:swipeleft="onSwipeLeft">Swipe me!</div>
 ```
 
-#### Configuring Recognizer Options
+```js
+// add the callback method to the methods of our component:
+methods: {
+  onSwipeLeft(event) {
+    // event is a Hammer Event Object
+  }
+}
+```
 
-There are two ways to customize recognizer options such as `direction` and `threshold`. The first one is setting global options:
+See the [Hammer.js API documentation for the Event Object](https://hammerjs.github.io/api/#event-object) to learn about all of the event object's properties
+
+#### Configuring Global Recognizer Options
+
+You can set global options for your recognizers like this:
 
 ``` js
 // change the threshold for all swipe recognizers
@@ -40,17 +53,9 @@ VueTouch.config.swipe = {
 }
 ```
 
-Or, you can use the `v-touch-options` directive to configure the behavior on a specific element:
-
-``` html
-<!-- detect only horizontal pans with a threshold of 100 -->
-<a
-  v-touch:pan="onPan"
-  v-touch-options:pan="{ direction: 'horizontal', threshold: 100 }">
-</a>
-```
-
 #### Registering Custom Events
+
+If you want to use different options from the global ones for a Hammer event, you can create a custom event.
 
 ``` js
 // example registering a custom doubletap event.
