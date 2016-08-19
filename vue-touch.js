@@ -91,7 +91,7 @@
           mc.off(binding.arg, oldHandler)
           handlers[event] = null
         }
-        
+
         // if no more handlers left, destroy the hammer manager instance
         var allHandlersGone = Object.keys(mc.handlers).every(function (key) {
           return mc.handlers[key].length === 0
@@ -118,7 +118,7 @@
     if (oldHandler && oldHandler !== fn) {
       mc.off(event, oldHandler)
       handlers[event] = null
-
+    }
     // if there's a new handler, add it
     if (oldHandler !== fn) {
       if (typeof fn === 'function') {
