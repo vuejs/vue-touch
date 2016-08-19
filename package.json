@@ -1,6 +1,6 @@
 {
   "name": "vue-touch",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0",
   "main": "vue-touch.js",
   "files": [
     "vue-touch.js",
