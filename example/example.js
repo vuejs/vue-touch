@@ -1,5 +1,5 @@
 var Vue = require('vue/dist/vue')
-var VueTouch = require('../')
+var VueTouch = require('../vue-touch.js')
 
 // use the plugin
 Vue.use(VueTouch)
