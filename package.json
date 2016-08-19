@@ -3,7 +3,8 @@
   "version": "2.0.0-alpha.1",
   "main": "vue-touch.js",
   "files": [
-    "vue-touch.js"
+    "vue-touch.js",
+    "vue-touch.min.js"
   ],
   "description": "Hammer.js based touch events plugin for Vue.js",
   "license": "MIT",
