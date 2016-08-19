@@ -23,6 +23,7 @@
   },
   "scripts": {
     "build": "webpack example/example.js example/example.build.js && uglifyjs vue-touch.js -c -m > vue-touch.min.js",
-    "dev": "webpack --watch example/example.js example/example.build.js"
+    "dev": "webpack --watch example/example.js example/example.build.js",
+    "sync": "cd example && browser-sync start --server"
   }
 }
