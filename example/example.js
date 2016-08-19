@@ -16,12 +16,10 @@ var App = {
   template: '#test',
   data: function () {
     return {
-      event: '',
-      show: true,
+      event: ''
     }
   },
   methods: {
-    toggle: function() {this.show = !this.show},
     test: function (e) {
       this.event = e.type
     }

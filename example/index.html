@@ -17,10 +17,7 @@
     </div>
     <template id="test">
       <div>
-        <button @click="toggle">Toggle Test-Div</button>
-        <pre>{{$data}}</pre>
         <div id="test-div"
-          v-if="show"
           v-touch:tap="test"
           v-touch:pan="test"
 
@@ -35,6 +32,7 @@
           <!-- v-touch-options:pan="{ direction: 'up', threshold: 100 }" -->
           <!-- v-touch-options:swipe="{ direction: 'horizontal' }" -->
         </div>
+        <pre>{{$data}}</pre>
       </div>
 
     </template>
