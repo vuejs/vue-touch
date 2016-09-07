@@ -11,6 +11,20 @@
   if (!Hammer) {
     throw new Error('[vue-touch] cannot locate Hammer.js.')
   }
+  
+  function stopFilter (handler) {
+    return function stopHandler (e) {
+      e.stopPropagation()
+      return handler.call(this, e)
+    }
+  }
+  
+  function preventFilter (handler) {
+    return function preventHandler (e) {
+      e.preventDefault()
+      return handler.call(this, e)
+    }
+  }
 
   // exposed global options
   vueTouch.config = {}
@@ -94,6 +108,12 @@
             this.arg + '="' + this.descriptor.raw
           )
         } else {
+          if (this.modifiers.stop) {
+            fn = stopFilter(fn)
+          }
+          if (this.modifiers.prevent) {
+            fn = preventFilter(fn)
+          }
           mc.on(event, (this.handler = fn))
         }
       },
