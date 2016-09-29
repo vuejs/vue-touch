@@ -1,6 +1,6 @@
 # vue-touch
 
-> Touch events plugin for Vue.js
+> Touch events plugin for Vue.js. **This plugin does not support Vue 2.0 yet.**
 
 This is a directive wrapper for Hammer.js 2.0.
 
