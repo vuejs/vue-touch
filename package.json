@@ -16,12 +16,17 @@
     "hammerjs": "^2.0.8"
   },
   "devDependencies": {
+    "buble": "^0.15.1",
+    "buble-loader": "^0.3.2",
     "uglify-js": "^2.6.2",
-    "vue": "^2.1.16",
-    "webpack": "^1.12.12"
+    "vue": "^2.1.6",
+    "webpack": "^2.1.0-beta.28"
+  },
+  "peerDependecies": {
+    "vue": "^2.1.0"
   },
   "scripts": {
     "build": "webpack example/example.js example/example.build.js && uglifyjs vue-touch.js -c -m > vue-touch.min.js",
-    "dev": "webpack --watch example/example.js example/example.build.js"
+    "watch": "webpack --watch --config build/webpack.config.dev.js",
   }
 }
