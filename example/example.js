@@ -1,5 +1,5 @@
 var Vue = require('vue')
-var VueTouch = require('../')
+var VueTouch = require('../src')
 
 // use the plugin
 Vue.use(VueTouch)
@@ -15,11 +15,15 @@ VueTouch.registerCustomEvent('doubletap', {
 new Vue({
   el: 'div',
   data: {
-    event: ''
+    event: {}
   },
   methods: {
     test: function (e) {
-      this.event = e.type
+      delete e.target
+      this.event = e
+    },
+    testx() {
+      return
     }
   }
 })
