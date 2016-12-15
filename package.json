@@ -18,6 +18,8 @@
   "devDependencies": {
     "buble": "^0.15.1",
     "buble-loader": "^0.3.2",
+    "rollup": "^0.37.0",
+    "rollup-plugin-buble": "^0.15.0",
     "uglify-js": "^2.6.2",
     "vue": "^2.1.6",
     "webpack": "^2.1.0-beta.28"
@@ -26,7 +28,7 @@
     "vue": "^2.1.0"
   },
   "scripts": {
-    "build": "webpack example/example.js example/example.build.js && uglifyjs vue-touch.js -c -m > vue-touch.min.js",
+    "build": "node_modules/.bin/rollup -c build/rollup.config.prod.js && uglifyjs dist/vue-touch.js -c -m > dist/vue-touch.min.js",
     "watch": "webpack --watch --config build/webpack.config.dev.js",
     "example": "browser-sync start --config bs-config.js"
   }
