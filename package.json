@@ -28,5 +28,6 @@
   "scripts": {
     "build": "webpack example/example.js example/example.build.js && uglifyjs vue-touch.js -c -m > vue-touch.min.js",
     "watch": "webpack --watch --config build/webpack.config.dev.js",
+    "example": "browser-sync start --config bs-config.js"
   }
 }
