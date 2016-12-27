@@ -1,0 +1,6 @@
+.container > div {
+  color: white;
+  background-color: navy;
+  width: 300px;
+  height: 150px;
+}

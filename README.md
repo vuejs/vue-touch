@@ -2,7 +2,7 @@
 
 > Touch events plugin for Vue.js
 
-This is a directive wrapper for Hammer.js 2.0.
+This is a component wrapper for Hammer.js 2.0.
 
 ## Install
 
@@ -11,8 +11,9 @@ This is a directive wrapper for Hammer.js 2.0.
 - Available through npm as `vue-touch`.
 
   ``` js
+  var Hammer = require('hammerjs')
   var VueTouch = require('vue-touch')
-  Vue.use(VueTouch)
+  Vue.use(VueTouch, {hammer: Hammer})
   ```
 
 #### Direct include
@@ -21,12 +22,14 @@ This is a directive wrapper for Hammer.js 2.0.
 
 ## Usage
 
-#### Using the `v-touch` directive
+#### Using the `<v-touch>` component
 
 ``` html
-<a v-touch:tap="onTap">Tap me!</a>
+<!-- Renders a div element by default -->
+<v-touch v-on:swipeleft="onSwipeLeft">Swipe me!</v-touch>
 
-<div v-touch:swipeleft="onSwipeLeft">Swipe me!</div>
+<!-- Render as other elements with the 'tag' prop -->
+<v-touch tag="a" v-on:tap="onTap">Tap me!</v-touch>
 ```
 
 #### Configuring Recognizer Options
@@ -40,14 +43,14 @@ VueTouch.config.swipe = {
 }
 ```
 
-Or, you can use the `v-touch-options` directive to configure the behavior on a specific element:
+Or, you can use the matching `*-options` props to configure the behavior on a specific element:
 
 ``` html
 <!-- detect only horizontal pans with a threshold of 100 -->
-<a
-  v-touch:pan="onPan"
-  v-touch-options:pan="{ direction: 'horizontal', threshold: 100 }">
-</a>
+<v-touch
+  v-on:pan="onPan"
+  v-bind:pan-options="{ direction: 'horizontal', threshold: 100 }">
+</v-touch>
 ```
 
 #### Registering Custom Events
@@ -61,8 +64,14 @@ VueTouch.registerCustomEvent('doubletap', {
   taps: 2
 })
 ```
+**Warning**: You have to register your custom events *before* installing the plugin with `Vue.use(VueTouch)`.
+VueTouch will throw an error if you try to do that afterwards, and the event will not work as intended if you try to use
+local options for it on the `<v-touch>` element.
+
 ``` html
-<a v-touch:doubletap="onDoubleTap"></a>
+<v-touch v-on:doubletap="onDoubleTap"></v-touch>
+<!-- with local options -->
+<v-touch v-on:doubletap="onDoubleTap" v-bind:doubletap-options="{intervall: 250}"></v-touch>
 ```
 
 See [Hammer.js documentation](http://hammerjs.github.io/getting-started/) for all available events.

@@ -1,132 +1,210 @@
-var Hammer = typeof require === 'function'
-  ? require('hammerjs')
-  : window.Hammer
+let Hammer
 
-const gestures = ['tap', 'pan', 'pinch', 'press', 'rotate', 'swipe']
+const gestures = [
+  'pan','panstart','panmove','panend','pancancel','panleft','panright','panup','pandown',
+  'pinch','pinchstart','pinchmove','pinchend','pinchcancel','pinchin','pinchout',
+  'press','pressup',
+  'rotate','rotatestart','rotatemove','rotateend','rotatecancel',
+  'swipe','swipeleft','swiperight','swipeup','swipedown',
+  'tap'
+]
+const gestureMap = {
+  pan: 'pan',
+  panstart: 'pan',
+  panmove: 'pan',
+  panend: 'pan',
+  pancancel: 'pan',
+  panleft: 'pan',
+  panright: 'pan',
+  panup: 'pan',
+  pandown: 'pan',
+  pinch: 'pinch',
+  pinchstart: 'pinch',
+  pinchmove: 'pinch',
+  pinchend: 'pinch',
+  pinchcancel: 'pinch',
+  pinchin: 'pinch',
+  pinchout: 'pinch',
+  press: 'press',
+  pressup: 'press',
+  rotate: 'rotate',
+  rotatestart: 'rotate',
+  rotatemove: 'rotate',
+  rotateend: 'rotate',
+  rotatecancel: 'rotate',
+  swipe: 'swipe',
+  swipeleft: 'swipe',
+  swiperight: 'swipe',
+  swipeup: 'swipe',
+  swipedown: 'swipe',
+  tap: 'tap'
+}
 const directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical', 'all']
 const customEvents = {}
+let installed = false
 
-const vueTouch = {}
+const vueTouch = { config: {}, customEvents }
 
-vueTouch.install = function(Vue, opts = {}) {
+vueTouch.component = {
+  props: {
+    tapOptions: {
+      type: Object,
+      default() { return {} }
+    },
+    panOptions: {
+      type: Object,
+      default() { return {} }
+    },
+    pinchOptions: {
+      type: Object,
+      default() { return {} }
+    },
+    pressOptions: {
+      type: Object,
+      default() { return {} }
+    },
+    rotateOptions: {
+      type: Object,
+      default() { return {} }
+    },
+    swipeOptions: {
+      type: Object,
+      default() { return {} }
+    },
+    tag: {
+      type: String,
+      default: 'div'
+    }
+  },
 
-  var name = opts.name || 'v-touch'
+  mounted() {
+    this.hammer = new Hammer.Manager(this.$el)
+    this.recognizers = {}
+    this.setupRecognizers()
+  },
+  destroyed() {
+    this.hammer.destroy()
+  },
 
-  Vue.component(name, {
-
-    props: {
-     tapOptions: {
-       type: Object,
-       default: () => ({}),
-     },
-     panOptions: {
-       type: Object,
-       default: () => ({}),
-     },
-     pinchOptions: {
-       type: Object,
-       default: () => ({}),
-     },
-     pressOptions: {
-       type: Object,
-       default: () => ({}),
-     },
-     rotateOptions: {
-       type: Object,
-       default: () => ({}),
-     },
-     swipeOptions: {
-       type: Object,
-       default: () => ({}),
-     },
-     customOptions: {
-       type: Object,
-       default: () => ({}),
-     },
-
-     tag: {
-       type: String,
-       default: 'a'
-     }
+  methods: {
+    setupRecognizers() {
+      this.setupBuiltinRecognizers()
+      this.setupCustomRecognizers()
     },
 
-    mounted() {
-     this.hammer = new Hammer.Manager(this.$el)
-     this.setupListeners()
-    },
-    destroyed() {
-     this.hammer.destroy()
-    },
-
-    methods: {
-
-      setupListeners() {
-        // Built-in events
-        // We check weither any event callback are registered
-        // for the default gesture, and if so, add a Recognizer
-        for (let i = 0; i < gestures.length; i++) {
+    setupBuiltinRecognizers()  {
+      // Built-in events
+      // We check weither any event callbacks are registered
+      // for the gesture, and if so, add a Recognizer
+      for (let i = 0; i < gestures.length; i++) {
         const gesture = gestures[i]
         if (this._events[gesture]) {
-          const options = this[`${gesture}Options`]
-          this.addRecognizer(gesture, options)
+          // get the main gesture (e.g. 'panstart' -> 'pan')
+          const mainGesture = gestureMap[gesture]
+          //merge global and local options
+          const options = Object.assign({}, vueTouch.config[mainGesture], this[`${mainGesture}Options`])
+          // add recognizer for this main gesture
+          this.addRecognizer(mainGesture, options)
+          // register Event Emit for the specific gesture
+          this.addEvent(gesture)
         }
-        }
-
-        // Custom events
-        // We get the customGestures and options from the
-        // customEvents object, then basically do the same check
-        // as we did for the built-in events.
-        const customs = customEvents
-        const customGestures = Object.keys(customs)
-
-        for (let i = 0; i < customGestures.length; i++) {
-
-          const customGesture = customGestures[i]
-          const options = customs[customGesture]
-
-          if (this._events[customGesture]) {
-            this.addRecognizer(customGesture, options, {custom: true})
-          }
-        }
-      },
-
-      addRecognizer(gesture, opts, { custom = false } = {}) {
-        const mc = this.hammer
-        const localCustomOpts = this.customOptions[gesture] || {}
-        const options = guardDirections(Object.assign({}, opts, localCustomOpts))
-
-        // if opts has a type property, it's a custom gesture,
-        // and we have to use this type as the gesture to listen for
-        const baseGesture = custom ? opts.type : gesture
-        // create recognizer, e.g. new Hammer['Pan'](options)
-        const recognizer = new Hammer[capitalize(baseGesture)](options)
-        recognizer.recognizeWith(mc.recognizers)
-
-        mc.add(recognizer)
-        mc.on(gesture, (e) => { this.$emit(gesture, e)})
       }
     },
 
-    render(h) {
-      return h(this.tag, {}, this.$slots.default)
+    setupCustomRecognizers() {
+      // Custom events
+      // We get the customGestures and options from the
+      // customEvents object, then basically do the same check
+      // as we did for the built-in events.
+      const gestures = Object.keys(customEvents)
+
+      for (let i = 0; i < gestures.length; i++) {
+
+        const gesture = gestures[i]
+
+        if (this._events[gesture]) {
+          const mainGesture = gestureMap[gesture]
+          const opts = customEvents[gesture]
+          const localCustomOpts = this[`${gesture}Options`] || {}
+          const options = Object.assign({}, opts, localCustomOpts)
+          this.addRecognizer(gesture, options, {mainGesture: options.type})
+          this.addEvent(gesture)
+        }
+      }
+    },
+
+    addRecognizer(gesture, options, { mainGesture } = {}) {
+      // create recognizer, e.g. new Hammer['Swipe'](options)
+      if (!this.recognizers[gesture]) {
+        const recognizer = new Hammer[capitalize(mainGesture || gesture)](guardDirections(options))
+        this.recognizers[gesture] = recognizer
+        this.hammer.add(recognizer)
+        recognizer.recognizeWith(this.hammer.recognizers)
+      }
+    },
+
+    addEvent(gesture) {
+      this.hammer.on(gesture, (e) => this.$emit(gesture, e))
+    },
+
+    // Enabling / Disabling certain recognizers.
+    //
+    enable(r) { this.recognizers[r].set({ enable: true }) },
+    disable(r) { this.recognizers[r].set({ enable: false }) },
+    enableAll(r) { this.toggleAll({ enable: true }) },
+    disableAll(r) { this.toggleAll({ enable: false }) },
+    toggleAll({ enable }) {
+      const keys = Object.keys(this.recognizers)
+      for (let i = 0; i < keys.length; i++) {
+        const r = this.recognizers[keys[i]]
+        r.set({ enable: enable })
+      }
     }
-  })
+  },
+
+  render(h) {
+    return h(this.tag, {}, this.$slots.default)
+  }
+}
+
+// Plugin API
+// *********
+vueTouch.install = function(Vue, opts = {}) {
+
+  if (!opts.hammer && !window.Hammer) {
+    console.warn(`
+      [vue-touch] Hammer constructor not found. Either make it available globally,
+      or pass it as an option to the plugin: Vue.use(VueTouch, {hammer: Hammer})
+      notice the lowercase property key!
+    `)
+    return
+  }
+  const name = opts.name || 'v-touch'
+  Hammer = opts.hammer || window.Hammer
+  Vue.component(name, Object.assign(this.component, { name }))
+  installed = true
 
 }
 
 vueTouch.registerCustomEvent = function registerCustomEvent(event, options = {}) {
+  if (installed) {
+    console.warn(`
+      [vue-touch]: Custom Event '${event}' couldn't be added to vue-touch.
+      Custom Events have to be registered before installing the plugin.
+      `)
+    return
+  }
   options.event = event
   customEvents[event] = options
-}
-
-vueTouch.setDefaults = function setDefaults(newDefaults = {}) {
-  const keys = Object.keys(newDefaults)
-  for(let i = 0; i < keys.length; i++) {
-    Hammer.defaults[keys[i]] = newDefaults[keys[i]]
+  vueTouch.component.props[`${event}Options`] = {
+    type: Object,
+    default() { return {} }
   }
 }
 
 // Utilities
+// ********
+
 function capitalize (str) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }

@@ -1,8 +1,8 @@
 var Vue = require('vue')
 var VueTouch = require('../src')
-
+// import './styling.css'
+// import './components'
 // use the plugin
-Vue.use(VueTouch)
 
 // example registering a custom doubletap event.
 // the `type` indicates the base recognizer to use from Hammer
@@ -11,6 +11,8 @@ VueTouch.registerCustomEvent('doubletap', {
   type: 'tap',
   taps: 2
 })
+
+Vue.use(VueTouch)
 
 new Vue({
   el: 'div',
@@ -21,9 +23,7 @@ new Vue({
     test: function (e) {
       delete e.target
       this.event = e
-    },
-    testx() {
-      return
+      console.log(e)
     }
   }
 })

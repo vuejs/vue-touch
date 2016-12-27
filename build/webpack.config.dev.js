@@ -23,7 +23,12 @@ const config = {
       {
         test: /\.js$/,
         loader: 'buble-loader',
-        include: path.resolve(__dirname, "../src")
+        exclude: path.resolve(__dirname, "../node_modules")
+      },
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader',
+        exclude: path.resolve(__dirname, "../node_modules")
       }
     ]
   },
@@ -31,7 +36,11 @@ const config = {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor'
     })
-  ]
+  ],
+  devtool: 'source-map',
+  performance: {
+    hints: false
+  }
 }
 
 module.exports = config
