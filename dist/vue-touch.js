@@ -4,6 +4,8 @@
   (factory());
 }(this, (function () { 'use strict';
 
+var assign = require('object.assign').getPolyfill();
+
 var Hammer;
 
 var gestures = [
@@ -110,7 +112,7 @@ vueTouch.component = {
           // get the main gesture (e.g. 'panstart' -> 'pan')
           var mainGesture = gestureMap[gesture];
           //merge global and local options
-          var options = Object.assign({}, vueTouch.config[mainGesture], this$1[(mainGesture + "Options")]);
+          var options = assign({}, vueTouch.config[mainGesture], this$1[(mainGesture + "Options")]);
           // add recognizer for this main gesture
           this$1.addRecognizer(mainGesture, options);
           // register Event Emit for the specific gesture
@@ -133,10 +135,10 @@ vueTouch.component = {
         var gesture = gestures[i];
 
         if (this$1._events[gesture]) {
-          var mainGesture = gestureMap[gesture];
+          // const mainGesture = gestureMap[gesture]
           var opts = customEvents[gesture];
           var localCustomOpts = this$1[(gesture + "Options")] || {};
-          var options = Object.assign({}, opts, localCustomOpts);
+          var options = assign({}, opts, localCustomOpts);
           this$1.addRecognizer(gesture, options, {mainGesture: options.type});
           this$1.addEvent(gesture);
         }
@@ -177,6 +179,9 @@ vueTouch.component = {
         var r = this$1.recognizers[keys[i]];
         r.set({ enable: enable });
       }
+    },
+    isEnabled: function isEnabled(r) {
+      return this.recognizers[r] && this.recognizers[r].options.enable
     }
   },
 
@@ -197,7 +202,7 @@ vueTouch.install = function(Vue, opts) {
   }
   var name = opts.name || 'v-touch';
   Hammer = opts.hammer || window.Hammer;
-  Vue.component(name, Object.assign(this.component, { name: name }));
+  Vue.component(name, assign(this.component, { name: name }));
   installed = true;
 
 };
