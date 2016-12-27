@@ -44,6 +44,7 @@ vue-touch supports all Hammer Events ot of the box, just bind a listener to the 
 |---|----|----|----|
 |**Pan**|`pan`, `panstart`, `panmove`, `panend`, `pancancel`, `panleft`, `panright`, `panup`, `pandown` |`v-on:panstart="callback"`|
 |**Pinch**|`pinch`, `pinchstart`, `pinchmove`,`pinchend`, `pinchcancel`, `pinchin`, `pinchout`| `v-on:pinchout="callback"`|
+|**Press**|`press`, `pressup`|`v-on:pressup="callback"`|
 |**Rotate**|`rotate`, `rotatestart`, `rotatemove`, `rotateend`, `rotatecancel`, |`v-on:rotateend="callback"`|
 |**Swipe**|`swipe`, `swipeleft`, `swiperight`, `swipeup`, `swipedown`|`v-on:swipeleft="callback"`|
 |**Tap**|`tap`|`v-on:tap="callback"`|
