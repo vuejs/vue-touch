@@ -49,34 +49,13 @@ const vueTouch = { config: {}, customEvents }
 
 vueTouch.component = {
   props: {
-    tapOptions: {
-      type: Object,
-      default() { return {} }
-    },
-    panOptions: {
-      type: Object,
-      default() { return {} }
-    },
-    pinchOptions: {
-      type: Object,
-      default() { return {} }
-    },
-    pressOptions: {
-      type: Object,
-      default() { return {} }
-    },
-    rotateOptions: {
-      type: Object,
-      default() { return {} }
-    },
-    swipeOptions: {
-      type: Object,
-      default() { return {} }
-    },
-    tag: {
-      type: String,
-      default: 'div'
-    }
+    tapOptions: createProp(),
+    panOptions: createProp(),
+    pinchOptions: createProp(),
+    pressOptions: createProp(),
+    rotateOptions: createProp(),
+    swipeOptions: createProp(),
+    tag: createProp()
   },
 
   mounted() {
@@ -208,6 +187,13 @@ vueTouch.registerCustomEvent = function registerCustomEvent(event, options = {})
 
 // Utilities
 // ********
+
+function createProp() {
+  return {
+    type: Object,
+    default: function() { return {} }
+  }
+}
 
 function capitalize (str) {
   return str.charAt(0).toUpperCase() + str.slice(1)
