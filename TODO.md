@@ -4,12 +4,10 @@
 * [x] Add test run with prod build
 * [x] clean up package.json
 * [x] add unit tests
-* [ ] Write README docs
+* [x] Write README docs
 * [ ] Write Release notes
 * [ ] create 1.0 Branch for old version
-* [ ] include assign polyfill
-* [ ] extract utils into own module
-* [ ] extract component into own module
+* [x] include assign polyfill
 * [ ] create function to define props to reduce size.
-* [ ] use DefinePlugin / Replaceplugin to get rid of warnings in production.
-* [ ] add pulbic Methods `isEnabled(event)`
+* [ ] use DefinePlugin / ReplacePlugin to get rid of warnings in production.
+* [x] add public Methods `isEnabled(event)`
