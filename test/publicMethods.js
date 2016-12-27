@@ -47,3 +47,13 @@ test('enableAll / disableAll', t => {
 
   t.true(allEnabled(vt))
 })
+
+test('isEnabled()', t => {
+  t.plan(2)
+
+  t.true(vt.isEnabled('tap'))
+
+  vt.disable('tap')
+
+  t.false(vt.isEnabled('tap'))
+})

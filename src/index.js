@@ -159,6 +159,9 @@ vueTouch.component = {
         const r = this.recognizers[keys[i]]
         r.set({ enable: enable })
       }
+    },
+    isEnabled(r) {
+      return this.recognizers[r] && this.recognizers[r].options.enable
     }
   },
 
