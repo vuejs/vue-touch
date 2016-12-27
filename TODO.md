@@ -8,6 +8,6 @@
 * [ ] Write Release notes
 * [ ] create 1.0 Branch for old version
 * [x] include assign polyfill
-* [ ] create function to define props to reduce size.
+* [x] create function to define props to reduce size.
 * [ ] use DefinePlugin / ReplacePlugin to get rid of warnings in production.
 * [x] add public Methods `isEnabled(event)`
