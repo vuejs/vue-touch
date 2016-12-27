@@ -1,3 +1,5 @@
+const assign = require('object.assign').getPolyfill()
+
 let Hammer
 
 const gestures = [
@@ -102,7 +104,7 @@ vueTouch.component = {
           // get the main gesture (e.g. 'panstart' -> 'pan')
           const mainGesture = gestureMap[gesture]
           //merge global and local options
-          const options = Object.assign({}, vueTouch.config[mainGesture], this[`${mainGesture}Options`])
+          const options = assign({}, vueTouch.config[mainGesture], this[`${mainGesture}Options`])
           // add recognizer for this main gesture
           this.addRecognizer(mainGesture, options)
           // register Event Emit for the specific gesture
@@ -123,10 +125,9 @@ vueTouch.component = {
         const gesture = gestures[i]
 
         if (this._events[gesture]) {
-          const mainGesture = gestureMap[gesture]
           const opts = customEvents[gesture]
           const localCustomOpts = this[`${gesture}Options`] || {}
-          const options = Object.assign({}, opts, localCustomOpts)
+          const options = assign({}, opts, localCustomOpts)
           this.addRecognizer(gesture, options, {mainGesture: options.type})
           this.addEvent(gesture)
         }
@@ -184,7 +185,7 @@ vueTouch.install = function(Vue, opts = {}) {
   }
   const name = opts.name || 'v-touch'
   Hammer = opts.hammer || window.Hammer
-  Vue.component(name, Object.assign(this.component, { name }))
+  Vue.component(name, assign(this.component, { name }))
   installed = true
 
 }
