@@ -9,8 +9,8 @@ const config = {
   output: {
     path: path.resolve(__dirname, "../example"),
     publicPath: '/',
-    library: 'umd',
-    // libraryTarget: 'VueTouch',
+    library: 'VueTouch',
+    libraryTarget: 'umd',
     filename: '[name].build.js'
   },
   resolve: {
