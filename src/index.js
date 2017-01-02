@@ -30,21 +30,18 @@ vueTouch.component = {
 
   mounted() {
     this.hammer = new Hammer.Manager(this.$el)
-    this.recognizers = {}
-    this.setupRecognizers()
+    this.recognizers = {} // not reactive
+    this.setupBuiltinRecognizers()
+    this.setupCustomRecognizers()
   },
   destroyed() {
     this.hammer.destroy()
   },
 
   methods: {
-    setupRecognizers() {
-      this.setupBuiltinRecognizers()
-      this.setupCustomRecognizers()
-    },
 
     setupBuiltinRecognizers()  {
-      // Built-in events
+      // Built-in Hammer events
       // We check weither any event callbacks are registered
       // for the gesture, and if so, add a Recognizer
       for (let i = 0; i < gestures.length; i++) {
@@ -149,11 +146,11 @@ vueTouch.registerCustomEvent = function registerCustomEvent(event, options = {})
   }
   options.event = event
   customEvents[event] = options
-  vueTouch.component.props[`${event}Options`] = {
+  this.component.props[`${event}Options`] = {
     type: Object,
     default() { return {} }
   }
-}
+}.bind(vueTouch)
 
 // Utilities
 // ********
