@@ -157,9 +157,9 @@ vueTouch.registerCustomEvent = function registerCustomEvent(event, options = {})
 
 
 // Register
-if  (typeof exports !== "object") &&  // no commmonJS
+if  (typeof exports !== "object" &&  // no commmonJS
     (typeof define !== "function" && !define.amd) && // no AMD
-    (window.Vue) {
+    window.Vue) {
   window.VueTouch = vueTouch
   Vue.use(vueTouch)
 }
