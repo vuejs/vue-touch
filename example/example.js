@@ -1,5 +1,13 @@
 var Vue = require('vue')
-var VueTouch = require('../src')
+
+var VueTouch
+
+if (process.env.NODE_ENV === 'development') {
+  VueTouch = require('../src')
+}
+else {
+  VueTouch = require('../dist/vue-touch.js')
+}
 // import './styling.css'
 // import './components'
 // use the plugin
