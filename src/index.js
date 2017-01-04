@@ -1,3 +1,5 @@
+import Hammer from 'hammerjs'
+
 import {
   createProp,
   capitalize,
@@ -6,8 +8,6 @@ import {
   gestureMap,
   directions
 } from './utils'
-
-let Hammer
 
 const customEvents = {}
 let installed = false
