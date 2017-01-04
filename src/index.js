@@ -1,4 +1,3 @@
-import assignPolyfill from 'object.assign'
 import {
   createProp,
   capitalize,
@@ -7,8 +6,6 @@ import {
   gestureMap,
   directions
 } from './utils'
-
-const assign = assignPolyfill.getPolyfill()
 
 let Hammer
 
