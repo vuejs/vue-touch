@@ -33,7 +33,7 @@
     "webpack": "^2.1.0-beta.28"
   },
   "peerDependecies": {
-    "vue": "^2.1.0",
+    "vue": "^2.0.0",
     "hammerjs": "^2.0.8"
   },
   "scripts": {
@@ -58,9 +58,7 @@
     ]
   },
   "dependencies": {
-    "object.assign": "^4.0.4"
-  },
-  "peerDependencies": {
-    "hammerjs": "^2.0.8"
+    "rollup-plugin-commonjs": "^7.0.0",
+    "rollup-plugin-node-resolve": "^2.0.0"
   }
 }
