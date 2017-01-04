@@ -6,7 +6,8 @@ import {
   guardDirections,
   gestures,
   gestureMap,
-  directions
+  directions,
+  assign
 } from './utils'
 
 const customEvents = {}
