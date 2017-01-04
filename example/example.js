@@ -15,7 +15,7 @@ VueTouch.registerCustomEvent('doubletap', {
 Vue.use(VueTouch)
 
 new Vue({
-  el: 'div',
+  el: '#app',
   data: {
     event: {}
   },
