@@ -40,15 +40,23 @@
     "build": "node_modules/.bin/rollup -c build/rollup.config.prod.js && uglifyjs dist/vue-touch.js -c -m > dist/vue-touch.min.js",
     "watch": "webpack --watch --config build/webpack.config.dev.js",
     "example": "browser-sync start --config bs-config.js",
-    "test": "NODE_ENV=development node_modules/.bin/ava --verbose",
-    "test:prod": "NODE_ENV=production npm run build && node_modules/.bin/ava --verbose",
     "test:watch": "NODE_ENV=development node_modules/.bin/ava --watch --verbose",
-    "test:debug": "NODE_ENV=development inspect-process node_modules/ava/profile.js test/index.js"
+    "test:dev": "NODE_ENV=development node_modules/.bin/ava --verbose",
+    "test:prod": "NODE_ENV=production npm run build && node_modules/.bin/ava --verbose",
+    "test": "npm run test:dev && npm run test:prod",
+    "test:debug": "NODE_ENV=development inspect-process node_modules/ava/profile.js test/index.js",
   },
   "ava": {
     "require": [
       "babel-register",
-      "./test/helpers/browser-env.js"
+      "./test/unit/helpers/browser-env.js"
+    ],
+    "files": [
+      "test/unit/**/*.js",
+      "!est/unit/helpers/*"
+    ],
+    "source": [
+      "src/**/*"
     ]
   },
   "babel": {
