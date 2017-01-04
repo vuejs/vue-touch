@@ -1,12 +1,13 @@
 export function assign(target, ...sources) {
-  for (let i = 0; i < source.length; i++) {
-    const source = source[i]
+  for (let i = 0; i < sources.length; i++) {
+    const source = sources[i]
     const keys = Object.keys(source)
-    for (let i = 0; j < keys.length; j++) {
+    for (let i = 0; i < keys.length; i++) {
       const key = keys[i]
       target[key] = source[key]
     }
   }
+  return target
 }
 
 export function createProp() {
