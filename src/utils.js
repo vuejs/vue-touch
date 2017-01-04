@@ -1,3 +1,11 @@
+import Hammer from 'hammerjs' // used by guardDirections
+
+/**
+ * Tiny Object.assign replacement
+ * @param  {Object} target  Any type of object
+ * @param  {Object} sources Any type of object
+ * @return {Object}         Merged Object
+ */
 export function assign(target, ...sources) {
   for (let i = 0; i < sources.length; i++) {
     const source = sources[i]
@@ -10,6 +18,11 @@ export function assign(target, ...sources) {
   return target
 }
 
+/**
+ * Small helper method to generate prop options for all the
+ * *-options props.
+ * @return {[type]} [description]
+ */
 export function createProp() {
   return {
     type: Object,
@@ -21,6 +34,18 @@ export function capitalize (str) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
+/**
+ * Directions that VueTouch understands.
+ * Will be tanslated to Hammer-style directions by guardDirections()
+ * @type {Array}
+ */
+export const directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical', 'all']
+
+/**
+ * Translates VueTouch direction names into Hammer Direction numbers.
+ * @param  {Objects} options Hammer Options
+ * @return {Object}         [Hammer Options]
+ */
 export function guardDirections (options) {
   var dir = options.direction
   if (typeof dir === 'string') {
@@ -34,6 +59,28 @@ export function guardDirections (options) {
   return options
 }
 
+/**
+ * This pobject will contain global options for recognizers
+ * see index.js -> vueTouch.config
+ * @type {Object}
+ */
+export const config = {
+
+}
+
+/**
+ * This object will contain recognizer options for custom events.
+ * see index.js -> registerCustomEvent
+ * @type {Object}
+ */
+export const customEvents = {
+
+}
+
+/**
+ * Names of all the builtin gestures of Hammer
+ * @type {Array}
+ */
 export const gestures = [
   'pan','panstart','panmove','panend','pancancel','panleft','panright','panup','pandown',
   'pinch','pinchstart','pinchmove','pinchend','pinchcancel','pinchin','pinchout',
@@ -42,6 +89,11 @@ export const gestures = [
   'swipe','swipeleft','swiperight','swipeup','swipedown',
   'tap'
 ]
+
+/**
+ * Maps the gestures to their "main gesture" (the name of the recognizer)
+ * @type {Object}
+ */
 export const gestureMap = {
   pan: 'pan',
   panstart: 'pan',
@@ -73,4 +125,3 @@ export const gestureMap = {
   swipedown: 'swipe',
   tap: 'tap'
 }
-export const directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical', 'all']
