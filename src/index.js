@@ -12,21 +12,10 @@ vueTouch.component = Component
 // Plugin API
 // *********
 vueTouch.install = function install(Vue, opts = {}) {
-
-  if (!opts.hammer && !window.Hammer) {
-    console.warn(`
-      [vue-touch] Hammer constructor not found. Either make it available globally,
-      or pass it as an option to the plugin: Vue.use(VueTouch, {hammer: Hammer})
-      notice the lowercase property key!
-    `)
-    return
-  }
   const name = opts.name || 'v-touch'
-  Hammer = opts.hammer || window.Hammer
   Vue.component(name, assign(this.component, { name }))
   installed = true
-
-}
+}.bind(vueTouch)
 
 vueTouch.registerCustomEvent = function registerCustomEvent(event, options = {}) {
   if (installed) {
@@ -46,7 +35,6 @@ vueTouch.registerCustomEvent = function registerCustomEvent(event, options = {})
 
 // Utilities
 // ********
-
 
 if (typeof exports == "object") {
   module.exports = vueTouch
