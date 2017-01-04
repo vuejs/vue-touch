@@ -117,7 +117,7 @@ vueTouch.component = {
 
 // Plugin API
 // *********
-vueTouch.install = function(Vue, opts = {}) {
+vueTouch.install = function install(Vue, opts = {}) {
 
   if (!opts.hammer && !window.Hammer) {
     console.warn(`
