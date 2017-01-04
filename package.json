@@ -23,11 +23,11 @@
     "buble-loader": "^0.3.2",
     "css-loader": "^0.26.1",
     "hammerjs": "^2.0.8",
-    "inspect-process": "^0.4.0",
     "rollup": "^0.37.0",
     "rollup-plugin-buble": "^0.15.0",
     "sinon": "^1.17.6",
     "style-loader": "^0.13.1",
+    "testcafe": "^0.11.1",
     "uglify-js": "^2.6.2",
     "vue": "^2.1.6",
     "webpack": "^2.1.0-beta.28",
@@ -44,6 +44,7 @@
     "test:unit:dev": "NODE_ENV=development node_modules/.bin/ava --verbose",
     "test:unit:prod": "NODE_ENV=production npm run build && node_modules/.bin/ava --verbose",
     "test": "npm run test:unit:dev && npm run test:unit:prod && npm run test:e2e",
+    "test:e2e": "node ./test/e2e/index.js"
   },
   "ava": {
     "require": [
