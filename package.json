@@ -1,10 +1,10 @@
 {
   "name": "vue-touch",
-  "version": "2.0.0",
-  "main": "vue-touch.js",
+  "version": "2.0.0-beta.1",
+  "main": "dist/vue-touch.js",
   "files": [
-    "vue-touch.js",
-    "vue-touch.min.js"
+    "dist/vue-touch.js",
+    "dist/vue-touch.min.js"
   ],
   "description": "Hammer.js based touch events plugin for Vue.js 2.0",
   "license": "MIT",
@@ -13,17 +13,61 @@
     "url": "https://github.com/vuejs/vue-touch.git"
   },
   "bugs": "https://github.com/vuejs/vue-touch/issues",
-  "dependencies": {
-    "hammerjs": "^2.0.6"
-  },
   "devDependencies": {
+    "ava": "^0.17.0",
+    "babel-preset-es2015-node6": "^0.4.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "babel-register": "^6.18.0",
+    "browser-env": "^2.0.19",
+    "buble": "^0.15.1",
+    "buble-loader": "^0.3.2",
+    "css-loader": "^0.26.1",
+    "hammerjs": "^2.0.8",
+    "rollup": "^0.37.0",
+    "rollup-plugin-buble": "^0.15.0",
+    "sinon": "^1.17.6",
+    "style-loader": "^0.13.1",
+    "testcafe": "^0.11.1",
     "uglify-js": "^2.6.2",
-    "vue": "^2.0.0-rc.2",
-    "webpack": "^1.12.12"
+    "vue": "^2.1.6",
+    "webpack": "^2.1.0-beta.28",
+    "webpack-dev-server": "beta"
+  },
+  "peerDependecies": {
+    "vue": "^2.0.0",
+    "hammerjs": "^2.0.8"
   },
   "scripts": {
-    "build": "webpack example/example.js example/example.build.js && uglifyjs vue-touch.js -c -m > vue-touch.min.js",
-    "dev": "webpack --watch example/example.js example/example.build.js",
-    "sync": "cd example && browser-sync start --server"
+    "build": "node_modules/.bin/rollup -m -c build/rollup.config.prod.js && uglifyjs dist/vue-touch.js -c -m > dist/vue-touch.min.js",
+    "dev": "node build/devserver.js",
+    "test:watch": "NODE_ENV=development node_modules/.bin/ava --watch --verbose",
+    "test:unit:dev": "NODE_ENV=development node_modules/.bin/ava --verbose",
+    "test:unit:prod": "NODE_ENV=production npm run build && node_modules/.bin/ava --verbose",
+    "test": "npm run test:unit:dev && npm run test:unit:prod && npm run test:e2e",
+    "test:e2e": "node ./test/e2e/index.js"
+  },
+  "ava": {
+    "require": [
+      "babel-register",
+      "./test/unit/helpers/browser-env.js"
+    ],
+    "files": [
+      "test/unit/**/*.js",
+      "!est/unit/helpers/*"
+    ],
+    "source": [
+      "src/**/*"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "es2015-node6",
+      "stage-2"
+    ]
+  },
+  "dependencies": {
+    "rollup-plugin-cleanup": "^0.1.4",
+    "rollup-plugin-commonjs": "^7.0.0",
+    "rollup-plugin-node-resolve": "^2.0.0"
   }
 }

@@ -1,3 +1,6 @@
 node_modules
 .DS_Store
 example/example.build.js
+example/vendor.build.js
+example/*.map
+npm-debug.log
