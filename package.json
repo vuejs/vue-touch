@@ -44,8 +44,7 @@
     "test:watch": "NODE_ENV=development node_modules/.bin/ava --watch --verbose",
     "test:unit:dev": "NODE_ENV=development node_modules/.bin/ava --verbose",
     "test:unit:prod": "NODE_ENV=production npm run build && node_modules/.bin/ava --verbose",
-    "test": "npm run test:unit:dev && npm run test:unit:prod && npm run test:e2e",
-    "test:e2e": "node ./test/e2e/index.js"
+    "test": "npm run test:unit:dev && npm run test:unit:prod"
   },
   "ava": {
     "require": [
