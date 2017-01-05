@@ -38,7 +38,7 @@
     "hammerjs": "^2.0.8"
   },
   "scripts": {
-    "build": "node_modules/.bin/rollup -c build/rollup.config.prod.js && uglifyjs dist/vue-touch.js -c -m > dist/vue-touch.min.js",
+    "build": "node_modules/.bin/rollup -m -c build/rollup.config.prod.js && uglifyjs dist/vue-touch.js -c -m > dist/vue-touch.min.js",
     "dev": "node build/devserver.js",
     "test:watch": "NODE_ENV=development node_modules/.bin/ava --watch --verbose",
     "test:unit:dev": "NODE_ENV=development node_modules/.bin/ava --verbose",
@@ -66,6 +66,7 @@
     ]
   },
   "dependencies": {
+    "rollup-plugin-cleanup": "^0.1.4",
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-node-resolve": "^2.0.0"
   }
