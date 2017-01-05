@@ -8,15 +8,14 @@ This is a component wrapper for Hammer.js 2.0.
 
 > This plugin requires Vue >= 2.0. For the Vue 1.\*-compatible version, see the `1.0` branch
 
-#### CommonJS
 
 - Available through npm as `vue-touch`.
 
-  ``` js
-  var Hammer = require('hammerjs')
-  var VueTouch = require('vue-touch')
-  Vue.use(VueTouch, {hammer: Hammer})
-  ```
+```Javascript
+var VueTouch = require('vue-touch')
+Vue.use(VueTouch, {name: 'v-touch'})
+```
+You can pass an options object as the second argument, which at the moment accepts one property, `name`. It's used to define the name of the component that is registered with Vue and defaults to `'v-touch'`.
 
 #### Direct include
 
@@ -36,7 +35,7 @@ This is a component wrapper for Hammer.js 2.0.
 
 ## API
 
-### Events
+### Component Events
 
 vue-touch supports all Hammer Events ot of the box, just bind a listener to the component with `v-on` and vue-touch will setup the Hammer Manager & Recognizer for you.
 
@@ -49,22 +48,9 @@ vue-touch supports all Hammer Events ot of the box, just bind a listener to the 
 |**Swipe**|`swipe`, `swipeleft`, `swiperight`, `swipeup`, `swipedown`|`v-on:swipeleft="callback"`|
 |**Tap**|`tap`|`v-on:tap="callback"`|
 
-### Event Options
+### Component Props
 
-There are two ways to customize recognizer options such as `direction` and `threshold`.
-
-#### Defining Global Options
-
-``` js
-// change the threshold for all swipe recognizers
-VueTouch.config.swipe = {
-  threshold: 200
-}
-```
-
-#### Passing Options as props
-
-Or, you can use the matching `*-options` props to configure the behavior on a specific element:
+You can use the matching `*-options` props to pass Hammer options such as `direction` and `threshold`:
 
 ``` html
 <!-- detect only horizontal pans with a threshold of 100 -->
@@ -83,40 +69,21 @@ There's one prop per `Recognizer` available.
 |**Swipe**|`v-bind:swipe-options`|
 |**Tap**|`v-bind:tap-options`|
 
-
-These options will overwrite globally defined ones.
-
 See [Hammer.js documentation](http://hammerjs.github.io/getting-started/) for all available options for events.
 
-## Registering Custom Events
+#### Directions
 
-You can register custom events with vue-touch.
+In the above example, not that we used `direction: 'horizontal'`. Hammer's directions interface is a little ugly (Hammer['DIRECTION_HORIZONTAL']).
 
-``` js
-// example registering a custom doubletap event.
-// the `type` indicates the base recognizer to use from Hammer
-// all other options are Hammer recognizer options.
-VueTouch.registerCustomEvent('doubletap', {
-  type: 'tap',
-  taps: 2
-})
-```
-> **Warning**: You have to register your custom events *before* installing the plugin with `Vue.use(VueTouch)`.
-VueTouch will log a warning to the console (in dev mode) if you try to do that afterwards, and the event will not work.
+VueTouch keeps that from you and accepts simple strings as directions:
 
-This will make it possible to listen for this event on `<v-touch>`. Additionally, just like for "normal" events, you can pass further options as the corresponding prop.
-
-``` html
-<v-touch v-on:doubletap="onDoubleTap"></v-touch>
-<!-- with local options -->
-<v-touch v-on:doubletap="onDoubleTap" v-bind:doubletap-options="{intervall: 250}"></v-touch>
+```javascript
+const directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical', 'all']
 ```
 
-See `/example` for a multi-event demo. To build it, run `npm install && npm run build`.
+## Public Component Methods
 
-## Public Methods
-
-The vue-touch exposes a few convenience methods to enable and disable Recognizers:
+The component exposes a few convenience methods to enable and disable Recognizers:
 
 |Method|Explanation|
 |------|-----------|
@@ -143,6 +110,54 @@ The vue-touch exposes a few convenience methods to enable and disable Recognizer
   }
 </script>
 ```
+
+### Plugin Methods
+
+#### Global Event Options
+
+You can define global defaults for the builtin recognizers
+
+``` js
+// change the threshold for all swipe recognizers
+VueTouch.config.swipe = {
+  threshold: 200
+}
+```
+
+#### Registering Custom Events
+
+You can register custom events with vue-touch.
+
+``` js
+// example registering a custom doubletap event.
+// the `type` indicates the base recognizer to use from Hammer
+// all other options are Hammer recognizer options.
+VueTouch.registerCustomEvent('doubletap', {
+  type: 'tap',
+  taps: 2
+})
+```
+> **Warning**: You have to register your custom events *before* installing the plugin with `Vue.use(VueTouch)`.
+VueTouch will log a warning to the console (in dev mode) if you try to do that afterwards, and the event will not work.
+
+This will make it possible to listen for this event on `<v-touch>`. Additionally, just like for "normal" events, you can pass further options as the corresponding prop.
+
+``` html
+<v-touch v-on:doubletap="onDoubleTap"></v-touch>
+<!-- with local options -->
+<v-touch v-on:doubletap="onDoubleTap" v-bind:doubletap-options="{intervall: 250}"></v-touch>
+```
+
+See `/example` for a multi-event demo. To build it, run `npm install && npm run build`.
+
+## Known Limitations & Bugs
+
+* Curently, changing `-options` props will not change recogizer settings. The initial values will stay in place until the component is re-created.
+
+## TODO
+
+* [ ] Support updating recognizer options when props change.
+* [ ] Find out if e2e tests are possible(contribution welcome)
 
 ## License
 
