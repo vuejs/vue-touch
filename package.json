@@ -4,6 +4,7 @@
   "main": "dist/vue-touch.js",
   "files": [
     "dist/vue-touch.js",
+    "dist/vue-touch.js.map",
     "dist/vue-touch.min.js"
   ],
   "description": "Hammer.js based touch events plugin for Vue.js 2.0",
