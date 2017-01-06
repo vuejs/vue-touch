@@ -1,6 +1,7 @@
 # vue-touch
 
 > Touch events plugin for Vue.js
+> this is a BETA Release
 
 This is a component wrapper for Hammer.js 2.0.
 
@@ -12,6 +13,10 @@ This version is only compatible with Vue 2.0.
 
 
 - Available through npm as `vue-touch`.
+
+```bash
+npm install vue-touch@next
+```
 
 ```Javascript
 var VueTouch = require('vue-touch')
