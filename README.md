@@ -1,13 +1,14 @@
 # vue-touch
 
 > Touch events plugin for Vue.js
+
 > this is a BETA Release
 
 This is a component wrapper for Hammer.js 2.0.
 
 ## Install
 
-> This plugin requires Vue >= 2.0. For the Vue 1.\*-compatible version, see the `1.0` branch
+> This plugin requires Vue >= 2.0. For the Vue 1.\*-compatible version, see the `master` branch
 
 
 ### npm
@@ -80,15 +81,14 @@ See [Hammer.js documentation](http://hammerjs.github.io/getting-started/) for al
 
 #### Directions
 
-In the above example, not that we used `direction: 'horizontal'`. Hammer's directions interface is a little ugly (Hammer['DIRECTION_HORIZONTAL']).
+In the above example, note that we used `direction: 'horizontal'`. Hammer's directions interface is a little ugly (`Hammer['DIRECTION_HORIZONTAL']`).
 
 VueTouch keeps that from you and accepts simple strings as directions:
 
 ```javascript
 const directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical', 'all']
 ```
-
-## Public Component Methods
+### Public Component Methods
 
 The component exposes a few convenience methods to enable and disable Recognizers:
 
