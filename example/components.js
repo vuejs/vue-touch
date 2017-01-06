@@ -11,36 +11,54 @@ Vue.component('container', {
 Vue.component('rotator', {
   template: `
     <container>
-      <v-touch @rotate="cb" :rotate-options="{threshold: 15}" :style="rotated" class="rotator">
-        <slot></slot>
-        {{name || 'NoEvent'}} - {{angle}}deg, {{rotation}}
+      <v-touch
+        @rotatestart="start"
+        @rotate="rotate"
+        @doubletap="reset"
+        :rotate-options="{threshold: 15}"
+        style="text-align: center; padding-top: 30px;" :style="rotated" class="rotator"
+      >
+        <slot></slot><br>
+        This element is rotated {{rotation | round(2) }} deg<br>
+        Double-tap to reset.
       </v-touch>
+      {{$data}}
     </container>
   `,
   data() {
     return  {
-      angle: 0,
+      startRotation: 0,
+      currentRotation: 0,
       rotation: 0,
-      initialRotation: 0,
       name: ''
     }
   },
   methods: {
-    cb(event) {
-      console.log('rotate', event)
-      if (event.isFirst) { this.initialRotation = event.rotation }
-      else {
-        const newRotation = Math.round(event.rotation - this.initialRotation)
+    start(e) {
+      this.startRotation = e.rotation < 0 ? 360 + e.rotaton : e.rotation
+      this.name = e.type
+    },
+    rotate(e) {
+      this.currentRotation = e.rotation < 0 ? 360 + e.rotation : e.rotation
 
-        this.rotation = this.rotation = newRotation
-      }
-      this.angle = Math.round(event.angle)
-      this.name = event.type
+    },
+    reset() {
+      this.currentRotation = 0
+      this.startRotation = 0
     }
   },
   computed: {
     rotated() {
-      return { transform: `rotate(${this.rotation}deg)` }
+      const  { currentRotation: current, startRotation: start } = this.$data
+      const real = current - start
+      this.rotation = real
+      return { transform: `rotate(${real}deg)` }
+    }
+  },
+  filters: {
+    round(n, dec = 0) {
+      const f = Math.pow(10, dec)
+      return Math.round(n * f) / f
     }
   }
 })

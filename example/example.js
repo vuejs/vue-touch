@@ -8,9 +8,9 @@ if (process.env.NODE_ENV === 'development') {
 else {
   VueTouch = require('../dist/vue-touch.js')
 }
-// import './styling.css'
-// import './components'
-// use the plugin
+
+import './styling.css'
+import './components'
 
 // example registering a custom doubletap event.
 // the `type` indicates the base recognizer to use from Hammer
@@ -34,11 +34,4 @@ new Vue({
       console.log(e)
     }
   }
-}
-
-new Vue({
-  components: { app: App },
-  render(h) {
-    return h(App)
-  }
-}).$mount('#app')
+})
