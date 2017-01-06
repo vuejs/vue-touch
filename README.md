@@ -5,14 +5,12 @@
 
 This is a component wrapper for Hammer.js 2.0.
 
-This version is only compatible with Vue 2.0.
-
 ## Install
 
 > This plugin requires Vue >= 2.0. For the Vue 1.\*-compatible version, see the `1.0` branch
 
 
-- Available through npm as `vue-touch`.
+- Available through npm as `vue-touch`. As this version is currently in BETA, you have to install with the `next` tag.
 
 ```bash
 npm install vue-touch@next
