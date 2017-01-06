@@ -10,7 +10,9 @@ This is a component wrapper for Hammer.js 2.0.
 > This plugin requires Vue >= 2.0. For the Vue 1.\*-compatible version, see the `1.0` branch
 
 
-- Available through npm as `vue-touch`. As this version is currently in BETA, you have to install with the `next` tag.
+### npm
+
+Available through npm as `vue-touch`. As this version is currently in BETA, you have to install with the `next` tag.
 
 ```bash
 npm install vue-touch@next
@@ -24,11 +26,11 @@ You can pass an options object as the second argument, which at the moment accep
 
 #### Direct include
 
-- You can also directly include it with a `<script>` tag when you have Vue and Hammer.js already included globally. It will automatically install itself, and will add a global `VueTouch`.
+You can also directly include it with a `<script>` tag when you have Vue and Hammer.js already included globally. It will automatically install itself, and will add a global `VueTouch`.
 
 ## Usage
 
-#### Using the `<v-touch>` component
+Using the `<v-touch>` component
 
 ``` html
 <!-- Renders a div element by default -->
