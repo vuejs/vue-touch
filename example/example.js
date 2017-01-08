@@ -25,7 +25,8 @@ Vue.use(VueTouch)
 new Vue({
   el: '#app',
   data: {
-    event: {}
+    event: {},
+    state: {rotate: true, doubletap: true}
   },
   methods: {
     test: function (e) {

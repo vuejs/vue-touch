@@ -23,9 +23,13 @@
       </v-touch> -->
       <pre>{{event}}</pre>
 
-      <rotator>
+      <rotator :state="state">
         rotate me!
       </rotator>
+      <div>
+        <button @click="state.doubletap = !state.doubletap"> ({{state.doubletap ? 'enabled' : 'disabled' }})</button>
+      </div>
+      <pre>{{$data}}</pre>
     </div>
     <script src="vendor.build.js"></script>
     <script src="example.build.js"></script>

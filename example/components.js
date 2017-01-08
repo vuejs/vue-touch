@@ -1,17 +1,20 @@
 import Vue from 'vue'
 
 Vue.component('container', {
+  props: ['state'],
   template: `
-    <div class="container">
+    <div class="container" :state="state">
       <slot></slot>
     </div>
   `,
 })
 
 Vue.component('rotator', {
+  props: ['state'],
   template: `
     <container>
       <v-touch
+        :enabled="state"
         @rotatestart="start"
         @rotate="rotate"
         @doubletap="reset"
