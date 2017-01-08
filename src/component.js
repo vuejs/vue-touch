@@ -34,11 +34,21 @@ export default {
       this.recognizers = {} // not reactive
       this.setupBuiltinRecognizers()
       this.setupCustomRecognizers()
+      this.updateEnabled()
     }
   },
   destroyed() {
     if (!this.$isServer) {
       this.hammer.destroy()
+    }
+  },
+
+  watch: {
+    enabled: {
+      deep: true,
+      handler(...args) {
+        this.updateEnabled(...args)
+      }
     }
   },
 
