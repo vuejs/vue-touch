@@ -1,5 +1,3 @@
-import Hammer from 'hammerjs'
-
 import Component from './component'
 import { assign, config, customEvents } from './utils'
 
@@ -7,13 +5,11 @@ let installed = false
 
 const vueTouch = { config, customEvents }
 
-vueTouch.component = Component
-
 // Plugin API
 // *********
 vueTouch.install = function install(Vue, opts = {}) {
   const name = opts.name || 'v-touch'
-  Vue.component(name, assign(this.component, { name }))
+  Vue.component(name, assign(Component, { name }))
   installed = true
 }.bind(vueTouch)
 
@@ -27,7 +23,7 @@ vueTouch.registerCustomEvent = function registerCustomEvent(event, options = {})
   }
   options.event = event
   customEvents[event] = options
-  this.component.props[`${event}Options`] = {
+  Component.props[`${event}Options`] = {
     type: Object,
     default() { return {} }
   }
