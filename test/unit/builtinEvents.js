@@ -4,7 +4,7 @@ import Vue from 'vue/dist/vue.common'
 import VueTouch from './helpers/vue-touch'
 import Hammer from 'hammerjs'
 
-Vue.use(VueTouch, {hammer: Hammer})
+Vue.use(VueTouch)
 
 import {
   createFromTemplate,

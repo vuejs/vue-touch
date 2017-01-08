@@ -9,7 +9,7 @@ import { createFromTemplate, createInstanceFromTemplate } from './helpers'
 
 
 test.before(t => {
-  Vue.use(VueTouch, { hammer: Hammer })
+  Vue.use(VueTouch)
 })
 
 test('Rendering without props renders as div', t => {

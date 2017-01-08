@@ -8,7 +8,7 @@ VueTouch.registerCustomEvent('doubletap', {
   type: 'tap',
   taps: 2
 })
-Vue.use(VueTouch, {hammer: Hammer})
+Vue.use(VueTouch)
 
 import {
   createFromTemplate,

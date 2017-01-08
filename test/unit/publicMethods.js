@@ -4,7 +4,7 @@ import Vue from 'vue/dist/vue.common'
 import VueTouch from './helpers/vue-touch'
 import Hammer from 'hammerjs'
 
-Vue.use(VueTouch, {hammer: Hammer})
+Vue.use(VueTouch)
 
 import {
   createFromTemplate,
@@ -32,6 +32,20 @@ test('enable/disable', t => {
   vt.disable('swipe')
   t.true(isDisabled(vt, 'swipe'))
   t.true(isEnabled(vt, 'tap'))
+})
+
+test.('toggle', t => {
+  test.plan(2)
+
+  vm.toggle('tap')
+  let disabled = isDisabled(vm, 'tap')
+
+  t.true(disabled)
+
+  vm.toggle('tap')
+  let enabled = isEnabled(vm, 'tap')
+
+  t.true(enabled)
 })
 
 test('enableAll / disableAll', t => {
