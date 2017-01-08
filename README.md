@@ -1,14 +1,13 @@
 # vue-touch
 
 > Touch events plugin for Vue.js
-
 > this is a BETA Release
 
 This is a component wrapper for Hammer.js 2.0.
 
 ## Install
 
-> This plugin requires Vue >= 2.0. For the Vue 1.\*-compatible version, see the `master` branch
+> This plugin requires Vue >= 2.0. For the Vue 1.\*-compatible version, see the `1.0` branch
 
 
 ### npm
@@ -81,14 +80,15 @@ See [Hammer.js documentation](http://hammerjs.github.io/getting-started/) for al
 
 #### Directions
 
-In the above example, note that we used `direction: 'horizontal'`. Hammer's directions interface is a little ugly (`Hammer['DIRECTION_HORIZONTAL']`).
+In the above example, not that we used `direction: 'horizontal'`. Hammer's directions interface is a little ugly (Hammer['DIRECTION_HORIZONTAL']).
 
 VueTouch keeps that from you and accepts simple strings as directions:
 
 ```javascript
 const directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical', 'all']
 ```
-### Public Component Methods
+
+## Public Component Methods
 
 The component exposes a few convenience methods to enable and disable Recognizers:
 
@@ -156,6 +156,21 @@ This will make it possible to listen for this event on `<v-touch>`. Additionally
 ```
 
 See `/example` for a multi-event demo. To build it, run `npm install && npm run build`.
+
+## Server-Side Rendering (SSR)
+
+As of the moment of this writing, requiring HammerJS in a non-browser-environment (like during the build process of your SSR bundle) throws an error ([hammerjs/hammerjs#1060](https://github.com/hammerjs/hammer.js/issues/1060)).
+
+The easiest fix to that is to use a webpack alias to replace the hammerjs package with a module that just exports a stub, i.e. an empty object. vue-touch comes with such a module, called `hammer-ssr.js`
+```JavaScript
+alias: {
+  'hammerjs$': 'vue-touch/dist/hammer-ssr.js'
+}
+```
+
+Once is issue has been resolved HammerJS, this alias is no longer nessessary and can be removed.
+
+The `<v-touch>` component itself will never try to setup any Hamer Manangers or Recognizers if it detects that it is running in an SSR environment (seeVue.js API docs for [vm.$isServer](https://vuejs.org/v2/api/#vm-isServer)), so this will not lead to any errors. `<v-touch>` will only render a normal `<div>` element (or whatever element you defined with the `tag` prop).
 
 ## Known Limitations & Bugs
 
