@@ -117,15 +117,35 @@ export default {
 
     // Enabling / Disabling certain recognizers.
     //
-    enable(r) { this.recognizers[r].set({ enable: true }) },
-    disable(r) { this.recognizers[r].set({ enable: false }) },
+    enable(r) {
+      const recognizer = this.recognizers[r]
+      if (!recognizer.options.enable) {
+        recognizer.set({ enable: true })
+      }
+    },
+    disable(r) {
+      const recognizer = this.recognizers[r]
+      if (recognizer.options.enable) {
+        recognizer.set({ enable: false })
+      }
+    },
+    toggle(r) {
+      const recognizer = this.recognizers[r]
+      if (recognizer) {
+        recognizer.options.enable
+          ? this.disable(r)
+          : this.enable(r)
+      }
+    },
     enableAll(r) { this.toggleAll({ enable: true }) },
     disableAll(r) { this.toggleAll({ enable: false }) },
     toggleAll({ enable }) {
       const keys = Object.keys(this.recognizers)
       for (let i = 0; i < keys.length; i++) {
         const r = this.recognizers[keys[i]]
-        r.set({ enable: enable })
+        if (r.options.enable !== enable) {
+          r.set({ enable: enable })
+        }
       }
     },
     updateEnabled(newVal, oldVal) {
