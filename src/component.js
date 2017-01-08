@@ -24,13 +24,17 @@ export default {
   },
 
   mounted() {
-    this.hammer = new Hammer.Manager(this.$el)
-    this.recognizers = {} // not reactive
-    this.setupBuiltinRecognizers()
-    this.setupCustomRecognizers()
+    if (!this.$isServer) {
+      this.hammer = new Hammer.Manager(this.$el)
+      this.recognizers = {} // not reactive
+      this.setupBuiltinRecognizers()
+      this.setupCustomRecognizers()
+    }
   },
   destroyed() {
-    this.hammer.destroy()
+    if (!this.$isServer) {
+      this.hammer.destroy()
+    }
   },
 
   methods: {
