@@ -21,6 +21,11 @@ export default {
     rotateOptions: createProp(),
     swipeOptions: createProp(),
     tag: { type: String, default: 'div' },
+    enabled: {
+      default: true,
+      type: [Boolean, Object],
+
+    }
   },
 
   mounted() {
