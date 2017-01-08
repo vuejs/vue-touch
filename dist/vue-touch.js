@@ -45,6 +45,7 @@ var config = {
 };
 var customEvents = {
 };
+
 var gestures = [
   'pan','panstart','panmove','panend','pancancel','panleft','panright','panup','pandown',
   'pinch','pinchstart','pinchmove','pinchend','pinchcancel','pinchin','pinchout',
@@ -96,13 +97,17 @@ var Component = {
     tag: { type: String, default: 'div' },
   },
   mounted: function mounted() {
-    this.hammer = new Hammer.Manager(this.$el);
-    this.recognizers = {};
-    this.setupBuiltinRecognizers();
-    this.setupCustomRecognizers();
+    if (!this.$isServer) {
+      this.hammer = new Hammer.Manager(this.$el);
+      this.recognizers = {};
+      this.setupBuiltinRecognizers();
+      this.setupCustomRecognizers();
+    }
   },
   destroyed: function destroyed() {
-    this.hammer.destroy();
+    if (!this.$isServer) {
+      this.hammer.destroy();
+    }
   },
   methods: {
     setupBuiltinRecognizers: function setupBuiltinRecognizers()  {
@@ -169,11 +174,10 @@ var Component = {
 
 var installed = false;
 var vueTouch = { config: config, customEvents: customEvents };
-vueTouch.component = Component;
 vueTouch.install = function install(Vue, opts) {
   if ( opts === void 0 ) opts = {};
   var name = opts.name || 'v-touch';
-  Vue.component(name, assign(this.component, { name: name }));
+  Vue.component(name, assign(Component, { name: name }));
   installed = true;
 }.bind(vueTouch);
 vueTouch.registerCustomEvent = function registerCustomEvent(event, options) {
@@ -184,7 +188,7 @@ vueTouch.registerCustomEvent = function registerCustomEvent(event, options) {
   }
   options.event = event;
   customEvents[event] = options;
-  this.component.props[(event + "Options")] = {
+  Component.props[(event + "Options")] = {
     type: Object,
     default: function default$1() { return {} }
   };
