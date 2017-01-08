@@ -118,6 +118,24 @@ export default {
         r.set({ enable: enable })
       }
     },
+    updateEnabled(newVal, oldVal) {
+      if (newVal === true) {
+        this.enableAll()
+      } else if (newVal === false) {
+        this.disableAll()
+      } else if (typeof newVal === 'object') {
+        const keys = Object.keys(newVal)
+        for (let i = 0; i < keys.length; i++) {
+          const event = keys[i]
+          if (this.recognizers[event]) {
+            newVal[event]
+              ? this.enable(event)
+              : this.disable(event)
+          }
+        }
+      }
+
+    },
     isEnabled(r) {
       return this.recognizers[r] && this.recognizers[r].options.enable
     }
