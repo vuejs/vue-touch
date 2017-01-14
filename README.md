@@ -57,6 +57,9 @@ vue-touch supports all Hammer Events ot of the box, just bind a listener to the 
 
 ### Component Props
 
+
+#### Event Option Props
+
 You can use the matching `*-options` props to pass Hammer options such as `direction` and `threshold`:
 
 ``` html
@@ -78,7 +81,7 @@ There's one prop per `Recognizer` available.
 
 See [Hammer.js documentation](http://hammerjs.github.io/getting-started/) for all available options for events.
 
-#### Directions
+**About Directions:**
 
 In the above example, not that we used `direction: 'horizontal'`. Hammer's directions interface is a little ugly (Hammer['DIRECTION_HORIZONTAL']).
 
@@ -88,16 +91,40 @@ VueTouch keeps that from you and accepts simple strings as directions:
 const directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical', 'all']
 ```
 
-## Public Component Methods
+#### The 'enabled' Prop
 
-The component exposes a few convenience methods to enable and disable Recognizers:
+|Prop|allowed Values|
+|----|--------------|
+|enabled| Boolean or Object (see below)|
+
+You can enable and disable all or some of the event recognizers via the `enabled` prop:
+
+```
+<v-touch
+  <!-- enable all recognizers -->
+  v-bind:enabled="true"
+
+  <!-- disable all recognizers -->
+  v-bind:enabled="true"
+
+  <!-- pass an object to enable and disable recognizers individually -->
+  v-bind:enabled="{ pinch: true, rotate: false }"
+
+></v-touch>
+```
+
+
+### Public Component Methods
+
+The component exposes a few convenience methods to enable and disable Recognizers, and check if a recognizer is enabled:
 
 |Method|Explanation|
 |------|-----------|
-|`disable(event)`|disable the Recognizer for `event`|
-|`enable(event)`|disable the Recognizer for `event`|
-|`disableAll`|disable all Recognizers|
-|`enableAll`|enable all Recognizers|
+|`disable(event)`|disable event's recognizer|
+|`enable(event)`|disable event's recognizer|
+|`toggle(event)`|Toogle the 'enable' state of event's  recognizer|
+|`disableAll()`|disable all Recognizers|
+|`enableAll()`|enable all Recognizers|
 |`isEnabled(event)`|returns `true` if Recognizer for `event` is currently enabled|
 
 ```html
@@ -168,9 +195,9 @@ alias: {
 }
 ```
 
-Once is issue has been resolved HammerJS, this alias is no longer nessessary and can be removed.
+Once this issue has been resolved HammerJS, this alias is no longer nessessary and can be removed.
 
-The `<v-touch>` component itself will never try to setup any Hamer Manangers or Recognizers if it detects that it is running in an SSR environment (seeVue.js API docs for [vm.$isServer](https://vuejs.org/v2/api/#vm-isServer)), so this will not lead to any errors. `<v-touch>` will only render a normal `<div>` element (or whatever element you defined with the `tag` prop).
+The `<v-touch>` component itself will never try to setup any Hamer Manangers or Recognizers if it detects that it is running in an SSR environment (seeVue.js API docs for [vm.$isServer](https://vuejs.org/v2/api/#vm-isServer)). The component will only render a normal `<div>` element (or whatever element you defined with the `tag` prop).
 
 ## Known Limitations & Bugs
 
