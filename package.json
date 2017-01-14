@@ -1,6 +1,6 @@
 {
   "name": "vue-touch",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "main": "dist/vue-touch.js",
   "files": [
     "dist/vue-touch.js",

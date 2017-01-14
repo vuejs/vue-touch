@@ -45,7 +45,6 @@ var config = {
 };
 var customEvents = {
 };
-
 var gestures = [
   'pan','panstart','panmove','panend','pancancel','panleft','panright','panup','pandown',
   'pinch','pinchstart','pinchmove','pinchend','pinchcancel','pinchin','pinchout',
@@ -95,6 +94,10 @@ var Component = {
     rotateOptions: createProp(),
     swipeOptions: createProp(),
     tag: { type: String, default: 'div' },
+    enabled: {
+      default: true,
+      type: [Boolean, Object],
+    }
   },
   mounted: function mounted() {
     if (!this.$isServer) {
@@ -102,11 +105,23 @@ var Component = {
       this.recognizers = {};
       this.setupBuiltinRecognizers();
       this.setupCustomRecognizers();
+      this.updateEnabled(this.enabled);
     }
   },
   destroyed: function destroyed() {
     if (!this.$isServer) {
       this.hammer.destroy();
+    }
+  },
+  watch: {
+    enabled: {
+      deep: true,
+      handler: function handler() {
+        var args = [], len = arguments.length;
+        while ( len-- ) args[ len ] = arguments[ len ];
+        (ref = this).updateEnabled.apply(ref, args);
+        var ref;
+      }
     }
   },
   methods: {
@@ -150,17 +165,59 @@ var Component = {
       var this$1 = this;
       this.hammer.on(gesture, function (e) { return this$1.$emit(gesture, e); });
     },
-    enable: function enable(r) { this.recognizers[r].set({ enable: true }); },
-    disable: function disable(r) { this.recognizers[r].set({ enable: false }); },
-    enableAll: function enableAll(r) { this.toggleAll({ enable: true }); },
-    disableAll: function disableAll(r) { this.toggleAll({ enable: false }); },
+    updateEnabled: function updateEnabled(newVal, oldVal) {
+      var this$1 = this;
+      if (newVal === true) {
+        this.enableAll();
+      } else if (newVal === false) {
+        this.disableAll();
+      } else if (typeof newVal === 'object') {
+        var keys = Object.keys(newVal);
+        for (var i = 0; i < keys.length; i++) {
+          var event = keys[i];
+          if (this$1.recognizers[event]) {
+            newVal[event]
+              ? this$1.enable(event)
+              : this$1.disable(event);
+          }
+        }
+      }
+    },
+    enable: function enable(r) {
+      var recognizer = this.recognizers[r];
+      if (!recognizer.options.enable) {
+        recognizer.set({ enable: true });
+      }
+    },
+    disable: function disable(r) {
+      var recognizer = this.recognizers[r];
+      if (recognizer.options.enable) {
+        recognizer.set({ enable: false });
+      }
+    },
+    toggle: function toggle(r) {
+      var recognizer = this.recognizers[r];
+      if (recognizer) {
+        recognizer.options.enable
+          ? this.disable(r)
+          : this.enable(r);
+      }
+    },
+    enableAll: function enableAll(r) {
+      this.toggleAll({ enable: true });
+    },
+    disableAll: function disableAll(r) {
+      this.toggleAll({ enable: false });
+    },
     toggleAll: function toggleAll(ref) {
       var this$1 = this;
       var enable = ref.enable;
       var keys = Object.keys(this.recognizers);
       for (var i = 0; i < keys.length; i++) {
         var r = this$1.recognizers[keys[i]];
-        r.set({ enable: enable });
+        if (r.options.enable !== enable) {
+          r.set({ enable: enable });
+        }
       }
     },
     isEnabled: function isEnabled(r) {
@@ -193,6 +250,7 @@ vueTouch.registerCustomEvent = function registerCustomEvent(event, options) {
     default: function default$1() { return {} }
   };
 }.bind(vueTouch);
+vueTouch.component = Component;
 if (typeof exports == "object") {
   module.exports = vueTouch;
 } else if (typeof define == "function" && define.amd) {
