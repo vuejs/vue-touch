@@ -116,7 +116,36 @@ export default {
     },
 
     // Enabling / Disabling certain recognizers.
-    //
+
+    /**
+     * Called when the `enabled` prop changes, and during mounted()
+     * It enables/disables values according to the value of the `emabled` prop
+     * @param  {Boolean|Object} newVal If an object: { recognizer: true|false }
+     * @param  {Boolean|Object} oldVal The previous value
+     * @return {undefined}
+     */
+    updateEnabled: function updateEnabled(newVal, oldVal) {
+      if (newVal === true) {
+        this.enableAll()
+
+      } else if (newVal === false) {
+        this.disableAll()
+
+      } else if (typeof newVal === 'object') {
+        const keys = Object.keys(newVal)
+
+        for (let i = 0; i < keys.length; i++) {
+          const event = keys[i]
+
+          if (this.recognizers[event]) {
+            newVal[event]
+              ? this.enable(event)
+              : this.disable(event)
+          }
+        }
+      }
+    },
+
     enable(r) {
       const recognizer = this.recognizers[r]
       if (!recognizer.options.enable) {
@@ -137,8 +166,13 @@ export default {
           : this.enable(r)
       }
     },
-    enableAll(r) { this.toggleAll({ enable: true }) },
-    disableAll(r) { this.toggleAll({ enable: false }) },
+
+    enableAll(r) {
+      this.toggleAll({ enable: true })
+    },
+    disableAll(r) {
+      this.toggleAll({ enable: false })
+    },
     toggleAll({ enable }) {
       const keys = Object.keys(this.recognizers)
       for (let i = 0; i < keys.length; i++) {
@@ -148,24 +182,7 @@ export default {
         }
       }
     },
-    updateEnabled(newVal, oldVal) {
-      if (newVal === true) {
-        this.enableAll()
-      } else if (newVal === false) {
-        this.disableAll()
-      } else if (typeof newVal === 'object') {
-        const keys = Object.keys(newVal)
-        for (let i = 0; i < keys.length; i++) {
-          const event = keys[i]
-          if (this.recognizers[event]) {
-            newVal[event]
-              ? this.enable(event)
-              : this.disable(event)
-          }
-        }
-      }
 
-    },
     isEnabled(r) {
       return this.recognizers[r] && this.recognizers[r].options.enable
     }
