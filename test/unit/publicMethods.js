@@ -34,16 +34,16 @@ test('enable/disable', t => {
   t.true(isEnabled(vt, 'tap'))
 })
 
-test.('toggle', t => {
-  test.plan(2)
+test('toggle', t => {
+  t.plan(2)
 
-  vm.toggle('tap')
-  let disabled = isDisabled(vm, 'tap')
+  vt.toggle('tap')
+  let disabled = isDisabled(vt, 'tap')
 
   t.true(disabled)
 
-  vm.toggle('tap')
-  let enabled = isEnabled(vm, 'tap')
+  vt.toggle('tap')
+  let enabled = isEnabled(vt, 'tap')
 
   t.true(enabled)
 })
