@@ -29,6 +29,8 @@ vueTouch.registerCustomEvent = function registerCustomEvent(event, options = {})
   }
 }.bind(vueTouch)
 
+vueTouch.component = Component
+
 // Utilities
 // ********
 
