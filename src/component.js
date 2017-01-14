@@ -34,7 +34,7 @@ export default {
       this.recognizers = {} // not reactive
       this.setupBuiltinRecognizers()
       this.setupCustomRecognizers()
-      this.updateEnabled()
+      this.updateEnabled(this.enabled)
     }
   },
   destroyed() {
