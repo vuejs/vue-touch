@@ -7,6 +7,10 @@ var server = new DevServer(compiler, {
   contentBase: './example/',
   clientLogLevel: 'warning',
   hot: true,
+  stats: {
+    chunks: false,
+    colors: true
+  }
 })
 
 server.listen(8080)
