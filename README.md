@@ -105,7 +105,7 @@ You can enable and disable all or some of the event recognizers via the `enabled
   v-bind:enabled="true"
 
   <!-- disable all recognizers -->
-  v-bind:enabled="true"
+  v-bind:enabled="false"
 
   <!-- pass an object to enable and disable recognizers individually -->
   v-bind:enabled="{ pinch: true, rotate: false }"
