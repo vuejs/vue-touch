@@ -62,6 +62,7 @@ vue-touch supports all Hammer Events ot of the box, just bind a listener to the 
 
 You can use the matching `*-options` props to pass Hammer options such as `direction` and `threshold`:
 
+**Example**
 ``` html
 <!-- detect only horizontal pans with a threshold of 100 -->
 <v-touch
@@ -99,7 +100,8 @@ const directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical', 'al
 
 You can enable and disable all or some of the event recognizers via the `enabled` prop:
 
-```
+**Example**
+```html
 <v-touch
   <!-- enable all recognizers -->
   v-bind:enabled="true"
@@ -111,6 +113,21 @@ You can enable and disable all or some of the event recognizers via the `enabled
   v-bind:enabled="{ pinch: true, rotate: false }"
 
 ></v-touch>
+```
+
+#### The 'options' prop
+
+Hammer accepts a few general options that are normally passed when creating a Hammer instance with `new Hammer()` or `new Hammer.Manager()`.
+
+In vue-touch, you can pass those options via the `options` prop:
+
+|Prop|allowed Values|
+|----|--------------|
+|options| https://hammerjs.github.io/api/#hammer.defaults |
+
+**Example**
+```html
+<v-touch options="{ touchAction: 'pan' }" />
 ```
 
 
