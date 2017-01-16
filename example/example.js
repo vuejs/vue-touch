@@ -1,8 +1,16 @@
 var Vue = require('vue')
-var VueTouch = require('../')
 
-// use the plugin
-Vue.use(VueTouch)
+var VueTouch
+
+if (process.env.NODE_ENV === 'development') {
+  VueTouch = require('../src')
+}
+else {
+  VueTouch = require('../dist/vue-touch.js')
+}
+
+import './styling.css'
+import './components'
 
 // example registering a custom doubletap event.
 // the `type` indicates the base recognizer to use from Hammer
@@ -12,14 +20,19 @@ VueTouch.registerCustomEvent('doubletap', {
   taps: 2
 })
 
+Vue.use(VueTouch)
+
 new Vue({
-  el: 'div',
+  el: '#app',
   data: {
-    event: ''
+    event: {},
+    state: {rotate: true, doubletap: true}
   },
   methods: {
     test: function (e) {
-      this.event = e.type
+      delete e.target
+      this.event = e
+      console.log(e)
     }
   }
 })
