@@ -14,6 +14,7 @@ import {
 
 export default {
   props: {
+    options: createProp(),
     tapOptions: createProp(),
     panOptions: createProp(),
     pinchOptions: createProp(),
@@ -30,7 +31,7 @@ export default {
 
   mounted() {
     if (!this.$isServer) {
-      this.hammer = new Hammer.Manager(this.$el)
+      this.hammer = new Hammer.Manager(this.$el, this.options)
       this.recognizers = {} // not reactive
       this.setupBuiltinRecognizers()
       this.setupCustomRecognizers()
