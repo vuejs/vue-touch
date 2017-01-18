@@ -6,6 +6,8 @@ This is a directive wrapper for Hammer.js 2.0.
 
 ## Install
 
+> This branch is only compatible with Vue 1.0. For the Vue 2.0 compatible rewrite, see the `next` branch
+
 #### CommonJS
 
 - Available through npm as `vue-touch`.
