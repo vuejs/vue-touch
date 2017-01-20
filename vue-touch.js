@@ -102,10 +102,8 @@
         if (this.handler) {
           this.mc.off(this.arg, this.handler)
         }
-        if (!Object.keys(this.mc.handlers).length) {
-          this.mc.destroy()
-          this.el.hammer = null
-        }
+        this.mc.destroy()
+        this.el.hammer = null
       }
     })
 
