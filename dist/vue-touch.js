@@ -87,6 +87,7 @@ var gestureMap = {
 
 var Component = {
   props: {
+    options: createProp(),
     tapOptions: createProp(),
     panOptions: createProp(),
     pinchOptions: createProp(),
@@ -101,7 +102,7 @@ var Component = {
   },
   mounted: function mounted() {
     if (!this.$isServer) {
-      this.hammer = new Hammer.Manager(this.$el);
+      this.hammer = new Hammer.Manager(this.$el, this.options);
       this.recognizers = {};
       this.setupBuiltinRecognizers();
       this.setupCustomRecognizers();
@@ -255,7 +256,7 @@ if (typeof exports == "object") {
   module.exports = vueTouch;
 } else if (typeof define == "function" && define.amd) {
   define([], function(){ return vueTouch });
-} else if (window.Vue) {
+} else if (typeof window !== 'undefined' && window.Vue) {
   window.VueTouch = vueTouch;
   Vue.use(vueTouch);
 }
