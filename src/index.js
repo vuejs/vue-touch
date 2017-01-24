@@ -38,7 +38,7 @@ if (typeof exports == "object") {
   module.exports = vueTouch
 } else if (typeof define == "function" && define.amd) {
   define([], function(){ return vueTouch })
-} else if (window.Vue) {
+} else if (typeof window !== 'undefined' && window.Vue) {
   window.VueTouch = vueTouch
   Vue.use(vueTouch)
 }
