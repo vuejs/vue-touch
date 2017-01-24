@@ -205,7 +205,7 @@ See `/example` for a multi-event demo. To build it, run `npm install && npm run 
 
 As of the moment of this writing, requiring HammerJS in a non-browser-environment (like during the build process of your SSR bundle) throws an error ([hammerjs/hammerjs#1060](https://github.com/hammerjs/hammer.js/issues/1060)).
 
-The easiest fix to that is to use a webpack alias to replace the hammerjs package with a module that just exports a stub, i.e. an empty object. vue-touch comes with such a module, called `hammer-ssr.js`
+The easiest fix to that is to use a webpack alias (in your **server-side(!)** webpack copnfiguration) to replace the hammerjs package with a module that just exports a stub, i.e. an empty object. vue-touch comes with such a module, called `hammer-ssr.js`
 ```JavaScript
 alias: {
   'hammerjs$': 'vue-touch/dist/hammer-ssr.js'
