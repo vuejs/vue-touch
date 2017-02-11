@@ -22,6 +22,8 @@ export default {
     rotateOptions: createProp(),
     swipeOptions: createProp(),
     tag: { type: String, default: 'div' },
+    recognizeWith: {type: Object, default: () => ({}) },
+    requireFailure: {type: Object, default: () => ({}) },
     enabled: {
       default: true,
       type: [Boolean, Object],
@@ -35,6 +37,7 @@ export default {
       this.recognizers = {} // not reactive
       this.setupBuiltinRecognizers()
       this.setupCustomRecognizers()
+      this.setupRecognizerDependencies()
       this.updateEnabled(this.enabled)
     }
   },
@@ -95,6 +98,43 @@ export default {
       }
     },
 
+    setupRecognizerDependencies() {
+
+      /**
+       * THIS DOESNT WORK, DOUBLETAP NOT RECOGNIZED - SEE EXAMPLE
+       */
+      const rW = this.recognizeWith
+
+      if (rW && typeof rW === 'object') {
+        const keys = Object.keys(rW)
+        for (let i = 0; i < keys.length; i++) {
+          const key = keys[i]
+          if (!Array.isArray(rW[key])) {
+            console.error('[v-touch]: recognize-with expects an object whose property values are arrays.')
+            return
+          }
+          const recs = rW[key].map(name => this.recognizers[name])
+          this.recognizers[key].recognizeWith(recs)
+          console.log('recognize-with', recs)
+        }
+      }
+
+      const rF = this.requireFailure
+      if (rF && typeof rF === 'object') {
+        const keys = Object.keys(rF)
+        for (let i = 0; i < keys.length; i++) {
+          const key = keys[i]
+          if (!Array.isArray(rF[key])) {
+            console.error('[v-touch]: require-failure expects an object whose property values are arrays.')
+            return
+          }
+          const recs = rF[key].map(name => this.recognizers[name])
+          this.recognizers[key].requireFailure(recs)
+          console.log('require-failure', recs)
+        }
+      }
+    },
+
     /**
      * Registers a new Recognizer with the manager and saves it on the component
      * instance
@@ -108,7 +148,8 @@ export default {
         const recognizer = new Hammer[capitalize(mainGesture || gesture)](guardDirections(options))
         this.recognizers[gesture] = recognizer
         this.hammer.add(recognizer)
-        recognizer.recognizeWith(this.hammer.recognizers)
+        // the following line is unnecessary with the new recognizeWith prop.
+        // recognizer.recognizeWith(this.hammer.recognizers)
       }
     },
 

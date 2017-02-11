@@ -92,6 +92,31 @@ VueTouch keeps that from you and accepts simple strings as directions:
 const directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical', 'all']
 ```
 
+#### `recognize-with` & `require-failure` Props
+
+To define which gestures should be recognized together, use `recognize-with`:
+
+```html
+<v-touch
+  v-on:pan="handler"
+  v-on:swipe="otherHandler"
+  recognize-with="{pan: ['swipe' /*, other recognizers*/]}"
+/>
+```
+
+If you a recognizer to trigger only if another one failes, use `require-failure`:
+```html
+<!--
+  the tap handler will only be called if the doubletp recognizer doesn't trigger.
+-->
+<v-touch
+  v-on:tap="handleSingleTap"
+  v-on:doubletap="handleDoubleTap"
+  require-failure="{tap: ['doubletap']}"
+/>
+
+```
+
 #### The 'enabled' Prop
 
 |Prop|allowed Values|

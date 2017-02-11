@@ -33,6 +33,10 @@ new Vue({
       delete e.target
       this.event = e
       console.log(e)
+    },
+    testdouble: function (e) {
+      console.log('doubletap')
+      this.test(e)
     }
   }
 })
