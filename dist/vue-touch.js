@@ -253,7 +253,7 @@ vueTouch.registerCustomEvent = function registerCustomEvent(event, options) {
 }.bind(vueTouch);
 vueTouch.component = Component;
 if (typeof exports == "object") {
-  module.exports = vueTouch;
+  exports = vueTouch;
 } else if (typeof define == "function" && define.amd) {
   define([], function(){ return vueTouch });
 } else if (typeof window !== 'undefined' && window.Vue) {
