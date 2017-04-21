@@ -47,7 +47,7 @@ Using the `<v-touch>` component
 vue-touch supports all Hammer Events ot of the box, just bind a listener to the component with `v-on` and vue-touch will setup the Hammer Manager & Recognizer for you.
 
 |Recognizer|Events|Example|
-|---|----|----|----|
+|---|----|----|
 |**Pan**|`pan`, `panstart`, `panmove`, `panend`, `pancancel`, <br>`panleft`, `panright`, `panup`, `pandown` |`v-on:panstart="callback"`|
 |**Pinch**|`pinch`, `pinchstart`, `pinchmove`,`pinchend`, <br>`pinchcancel`, `pinchin`, `pinchout`| `v-on:pinchout="callback"`|
 |**Press**|`press`, `pressup`|`v-on:pressup="callback"`|
