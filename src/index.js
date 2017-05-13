@@ -33,12 +33,9 @@ vueTouch.component = Component
 
 // Utilities
 // ********
-
-if (typeof exports == "object") {
-  module.exports = vueTouch
-} else if (typeof define == "function" && define.amd) {
-  define([], function(){ return vueTouch })
-} else if (window.Vue) {
+ if ( window !== undefined && window.Vue) {
   window.VueTouch = vueTouch
   Vue.use(vueTouch)
 }
+
+export default vueTouch
