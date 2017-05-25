@@ -38,4 +38,4 @@ vueTouch.component = Component
   Vue.use(vueTouch)
 }
 
-export default vueTouch
+export { vueTouch as default }

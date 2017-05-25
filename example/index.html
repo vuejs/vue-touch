@@ -15,13 +15,15 @@
   <body>
     <div id="app">
       <v-touch tag="div" id="test-div"
-        @tap="test"
-        @doubletap="test"
+        @tap="test($event, 'single')"
+        @doubletap="test($event, 'double')"
+        :doubletap-options="{ intervall: 400 }"
         :recognize-with="{ doubletap: ['tap'] }"
         :require-failure="{ tap: ['doubletap'] }"
       >
       <!--
 
+      :require-failure="{ tap: ['doubletap'] }"
       -->
         <p>{{event.type}}</p>
       </v-touch>

@@ -115,7 +115,6 @@ export default {
           }
           const recs = rW[key].map(name => this.recognizers[name])
           this.recognizers[key].recognizeWith(recs)
-          console.log('recognize-with', recs)
         }
       }
 
@@ -130,7 +129,6 @@ export default {
           }
           const recs = rF[key].map(name => this.recognizers[name])
           this.recognizers[key].requireFailure(recs)
-          console.log('require-failure', recs)
         }
       }
     },
