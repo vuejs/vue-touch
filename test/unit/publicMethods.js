@@ -2,7 +2,6 @@ import test from 'ava'
 
 import Vue from 'vue/dist/vue.common'
 import VueTouch from './helpers/vue-touch'
-import Hammer from 'hammerjs'
 
 Vue.use(VueTouch)
 

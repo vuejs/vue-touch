@@ -2,7 +2,6 @@ import test from 'ava'
 
 import Vue from 'vue/dist/vue.common'
 import VueTouch from './helpers/vue-touch'
-import Hammer from 'hammerjs'
 
 Vue.use(VueTouch)
 
@@ -11,8 +10,6 @@ import {
   isEnabled, isDisabled,
   allEnabled, allDisabled
 } from './helpers'
-
-let vt
 
 test('prop is true by default & events are enabled', t => {
   t.plan(2)

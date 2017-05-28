@@ -1,22 +1,4 @@
-import Hammer from 'hammerjs' // used by guardDirections
-
-/**
- * Tiny Object.assign replacement
- * @param  {Object} target  Any type of object
- * @param  {Object} sources Any type of object
- * @return {Object}         Merged Object
- */
-export function assign(target, ...sources) {
-  for (let i = 0; i < sources.length; i++) {
-    const source = sources[i]
-    const keys = Object.keys(source)
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i]
-      target[key] = source[key]
-    }
-  }
-  return target
-}
+import Hammer from 'hammerjs'
 
 /**
  * Small helper method to generate prop options for all the
@@ -26,30 +8,32 @@ export function assign(target, ...sources) {
 export function createProp() {
   return {
     type: Object,
-    default: function() { return {} }
+    default: function () {
+      return {}
+    }
   }
 }
 
-export function capitalize (str) {
+export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
 /**
  * Directions that VueTouch understands.
- * Will be tanslated to Hammer-style directions by guardDirections()
+ * Will be translated to Hammer-style directions by guardDirections()
  * @type {Array}
  */
 export const directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical', 'all']
 
 /**
  * Translates VueTouch direction names into Hammer Direction numbers.
- * @param  {Objects} options Hammer Options
+ * @param  {Object} options Hammer Options
  * @return {Object}         [Hammer Options]
  */
-export function guardDirections (options) {
-  var dir = options.direction
+export function guardDirections(options) {
+  const dir = options.direction
   if (typeof dir === 'string') {
-    var hammerDirection = 'DIRECTION_' + dir.toUpperCase()
+    const hammerDirection = 'DIRECTION_' + dir.toUpperCase()
     if (directions.indexOf(dir) > -1 && Hammer.hasOwnProperty(hammerDirection)) {
       options.direction = Hammer[hammerDirection]
     } else {
@@ -60,33 +44,23 @@ export function guardDirections (options) {
 }
 
 /**
- * This pobject will contain global options for recognizers
+ * This object will contain global options for recognizers
  * see index.js -> vueTouch.config
  * @type {Object}
  */
-export const config = {
-
-}
-
-/**
- * This object will contain recognizer options for custom events.
- * see index.js -> registerCustomEvent
- * @type {Object}
- */
-export const customEvents = {
-
-}
+export const config = {}
 
 /**
  * Names of all the builtin gestures of Hammer
+ *
  * @type {Array}
  */
 export const gestures = [
-  'pan','panstart','panmove','panend','pancancel','panleft','panright','panup','pandown',
-  'pinch','pinchstart','pinchmove','pinchend','pinchcancel','pinchin','pinchout',
-  'press','pressup',
-  'rotate','rotatestart','rotatemove','rotateend','rotatecancel',
-  'swipe','swipeleft','swiperight','swipeup','swipedown',
+  'pan', 'panstart', 'panmove', 'panend', 'pancancel', 'panleft', 'panright', 'panup', 'pandown',
+  'pinch', 'pinchstart', 'pinchmove', 'pinchend', 'pinchcancel', 'pinchin', 'pinchout',
+  'press', 'pressup',
+  'rotate', 'rotatestart', 'rotatemove', 'rotateend', 'rotatecancel',
+  'swipe', 'swipeleft', 'swiperight', 'swipeup', 'swipedown',
   'tap'
 ]
 
@@ -125,3 +99,7 @@ export const gestureMap = {
   swipedown: 'swipe',
   tap: 'tap'
 }
+
+export const normalizeGesture = name => gestureMap[name]
+
+export const objectHasArrayValues = value => typeof value === 'object' && Object.values(value).every(any => Array.isArray(any))
