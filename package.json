@@ -2,8 +2,11 @@
   "name": "vue-touch",
   "version": "2.0.0-beta.4",
   "main": "dist/vue-touch.js",
+  "jsnext:main": "dist/vue-touch.esm.js",
+  "module": "dist/vue-touch.esm.js",
   "files": [
     "dist/vue-touch.js",
+    "dist/vue-touch.esm.js",
     "dist/vue-touch.js.map",
     "dist/vue-touch.min.js",
     "dist/hammer-ssr.js"
@@ -39,7 +42,7 @@
     "vue": "^2.0.0"
   },
   "scripts": {
-    "build": "node_modules/.bin/rollup -m -c build/rollup.config.prod.js && uglifyjs dist/vue-touch.js -c -m > dist/vue-touch.min.js && cp src/hammer-ssr.js dist/",
+    "build": "node build/rollup.js && uglifyjs dist/vue-touch.js -c -m > dist/vue-touch.min.js && cp src/hammer-ssr.js dist/",
     "dev": "node build/devserver.js",
     "test:watch": "NODE_ENV=development node_modules/.bin/ava --watch --verbose",
     "test:unit:dev": "NODE_ENV=development node_modules/.bin/ava --verbose",

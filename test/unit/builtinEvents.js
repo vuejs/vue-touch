@@ -2,15 +2,12 @@ import test from 'ava'
 import sinon from 'sinon'
 import Vue from 'vue/dist/vue.common'
 import VueTouch from './helpers/vue-touch'
-import Hammer from 'hammerjs'
 
 Vue.use(VueTouch)
 
 import {
   createFromTemplate,
   hasRecognizer, hasHandler,
-  isEnabled, isDisabled,
-  allEnabled, allDisabled
 } from './helpers'
 
 
@@ -49,7 +46,7 @@ test('Uses global options from VueTouch.config', t => {
 
 test('Options prop overwrites global config', t => {
   const vt = createFromTemplate(`
-    <v-touch @swipe="cb" :swipe-options="{threshold: 15}"/>
+    <v-touch @swipe="cb" :swipe="{threshold: 15}"/>
   `)
   const options = vt.recognizers['swipe'].options
   t.true(options.threshold === 15)

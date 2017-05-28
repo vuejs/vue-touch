@@ -1,43 +1,52 @@
-import Hammer from 'hammerjs'
+import Hammer  from 'hammerjs'
 
 import {
   createProp,
   capitalize,
   guardDirections,
-  gestures,
-  gestureMap,
-  directions,
-  assign,
-  config,
-  customEvents
+  normalizeGesture,
+  objectHasArrayValues,
 } from './utils'
+
+import {
+  customEvents
+} from './events'
 
 export default {
   props: {
     options: createProp(),
-    tapOptions: createProp(),
-    panOptions: createProp(),
-    pinchOptions: createProp(),
-    pressOptions: createProp(),
-    rotateOptions: createProp(),
-    swipeOptions: createProp(),
+    tap: createProp(),
+    pan: createProp(),
+    pinch: createProp(),
+    press: createProp(),
+    rotate: createProp(),
+    swipe: createProp(),
     tag: { type: String, default: 'div' },
+    recognizeWith: {
+      type: Object,
+      default: () => ({}),
+      validate: objectHasArrayValues,
+    },
+    requireFailure: {
+      type: Object, default: () => ({}),
+      validate: objectHasArrayValues,
+    },
     enabled: {
       default: true,
       type: [Boolean, Object],
-
     }
   },
 
   mounted() {
     if (!this.$isServer) {
       this.hammer = new Hammer.Manager(this.$el, this.options)
-      this.recognizers = {} // not reactive
-      this.setupBuiltinRecognizers()
-      this.setupCustomRecognizers()
+      this.recognizers = {}
+      this.setupRecognizers()
+      this.setupRecognizerDependencies()
       this.updateEnabled(this.enabled)
     }
   },
+
   destroyed() {
     if (!this.$isServer) {
       this.hammer.destroy()
@@ -55,49 +64,42 @@ export default {
 
   methods: {
 
-    setupBuiltinRecognizers()  {
-      // Built-in Hammer events
-      // We check weither any event callbacks are registered
-      // for the gesture, and if so, add a Recognizer
-      for (let i = 0; i < gestures.length; i++) {
-        const gesture = gestures[i]
-        if (this._events[gesture]) {
-          // get the main gesture (e.g. 'panstart' -> 'pan')
-          const mainGesture = gestureMap[gesture]
-          //merge global and local options
-          const options = assign({}, (config[mainGesture] || {}), this[`${mainGesture}Options`])
-          // add recognizer for this main gesture
-          this.addRecognizer(mainGesture, options)
-          // register Event Emit for the specific gesture
+    /**
+     * Register recognizers for any event that matches
+     * a defined gesture or custom event.
+     */
+    setupRecognizers()  {
+      for (let gesture of Object.keys(this._events)) {
+        if (normalizeGesture(gesture)) {
           this.addEvent(gesture)
+
+          gesture = normalizeGesture(gesture)
+          const options = Object.assign({}, this.$options.config[gesture] || {}, this[gesture])
+          this.addRecognizer(gesture, options)
+        } else if (customEvents(gesture)) {
+          this.addEvent(gesture)
+
+          const options = Object.assign({}, customEvents(gesture), this[gesture])
+          this.addRecognizer(gesture, options, { mainGesture: options.type })
+        } else {
+          throw new Error(`Unknown gesture: ${gesture}`)
         }
       }
     },
 
-    setupCustomRecognizers() {
-      // Custom events
-      // We get the customGestures and options from the
-      // customEvents object, then basically do the same check
-      // as we did for the built-in events.
-      const gestures = Object.keys(customEvents)
+    setupRecognizerDependencies() {
+      for (const [key, value] of Object.entries(this.recognizeWith)) {
+        this.recognizers[key] && this.recognizers[key].recognizeWith(value.map(name => this.recognizers[name]))
+      }
 
-      for (let i = 0; i < gestures.length; i++) {
-
-        const gesture = gestures[i]
-
-        if (this._events[gesture]) {
-          const opts = customEvents[gesture]
-          const localCustomOpts = this[`${gesture}Options`] || {}
-          const options = assign({}, opts, localCustomOpts)
-          this.addRecognizer(gesture, options, {mainGesture: options.type})
-          this.addEvent(gesture)
-        }
+      for (const [key, value] of Object.entries(this.requireFailure)) {
+        this.recognizers[key] && this.recognizers[key].requireFailure(value.map(name => this.recognizers[name]))
       }
     },
 
     /**
-     * Registers a new Recognizer with the manager and saves it on the component
-     * instance
+     * Registers a new Recognizer with the manager and saves it on the component instance
+     *
      * @param {String} gesture     See utils.js -> gestures
      * @param {Object} options     Hammer options
      * @param {String} mainGesture if gesture is a custom event name, mapping to utils.js -> gestures
@@ -105,22 +107,18 @@ export default {
     addRecognizer: function addRecognizer(gesture, options, { mainGesture } = {}) {
       // create recognizer, e.g. new Hammer['Swipe'](options)
       if (!this.recognizers[gesture]) {
-        const recognizer = new Hammer[capitalize(mainGesture || gesture)](guardDirections(options))
-        this.recognizers[gesture] = recognizer
-        this.hammer.add(recognizer)
-        recognizer.recognizeWith(this.hammer.recognizers)
+        this.recognizers[gesture] = new Hammer[capitalize(mainGesture || gesture)](guardDirections(options))
+        this.hammer.add(this.recognizers[gesture])
       }
     },
 
     addEvent(gesture) {
-      this.hammer.on(gesture, (e) => this.$emit(gesture, e))
+      this.hammer.on(gesture, e => this.$emit(gesture, e))
     },
-
-    // Enabling / Disabling certain recognizers.
 
     /**
      * Called when the `enabled` prop changes, and during mounted()
-     * It enables/disables values according to the value of the `emabled` prop
+     * It enables/disables values according to the value of the `enabled` prop
      * @param  {Boolean|Object} newVal If an object: { recognizer: true|false }
      * @param  {Boolean|Object} oldVal The previous value
      * @return {undefined}
@@ -128,64 +126,55 @@ export default {
     updateEnabled: function updateEnabled(newVal, oldVal) {
       if (newVal === true) {
         this.enableAll()
-
       } else if (newVal === false) {
         this.disableAll()
-
       } else if (typeof newVal === 'object') {
-        const keys = Object.keys(newVal)
-
-        for (let i = 0; i < keys.length; i++) {
-          const event = keys[i]
-
-          if (this.recognizers[event]) {
-            newVal[event]
-              ? this.enable(event)
-              : this.disable(event)
-          }
+        for (const [event, status] of Object.entries(newVal)) {
+          this.recognizers[event] && status ? this.enable(event) : this.disable(event)
         }
       }
     },
 
-    enable(r) {
-      const recognizer = this.recognizers[r]
+    enable(gesture) {
+      const recognizer = this.recognizers[gesture]
       if (!recognizer.options.enable) {
         recognizer.set({ enable: true })
       }
     },
-    disable(r) {
-      const recognizer = this.recognizers[r]
+
+    disable(gesture) {
+      const recognizer = this.recognizers[gesture]
       if (recognizer.options.enable) {
         recognizer.set({ enable: false })
       }
     },
-    toggle(r) {
-      const recognizer = this.recognizers[r]
+
+    toggle(gesture) {
+      const recognizer = this.recognizers[gesture]
+
       if (recognizer) {
-        recognizer.options.enable
-          ? this.disable(r)
-          : this.enable(r)
+        recognizer.options.enable ? this.disable(gesture) : this.enable(gesture)
       }
     },
 
-    enableAll(r) {
-      this.toggleAll({ enable: true })
+    enableAll() {
+      this.setAll({ enable: true })
     },
-    disableAll(r) {
-      this.toggleAll({ enable: false })
+
+    disableAll() {
+      this.setAll({ enable: false })
     },
-    toggleAll({ enable }) {
-      const keys = Object.keys(this.recognizers)
-      for (let i = 0; i < keys.length; i++) {
-        const r = this.recognizers[keys[i]]
-        if (r.options.enable !== enable) {
-          r.set({ enable: enable })
+
+    setAll({ enable }) {
+      for (const recognizer of Object.values(this.recognizers)) {
+        if (recognizer.options.enable !== enable) {
+          recognizer.set({ enable })
         }
       }
     },
 
-    isEnabled(r) {
-      return this.recognizers[r] && this.recognizers[r].options.enable
+    isEnabled(gesture) {
+      return this.recognizers[gesture] && this.recognizers[gesture].options.enable
     }
   },
 

@@ -3,7 +3,7 @@ var Vue = require('vue')
 var VueTouch
 
 if (process.env.NODE_ENV === 'development') {
-  VueTouch = require('../src')
+  VueTouch = require('../src').default
 }
 else {
   VueTouch = require('../dist/vue-touch.js')
@@ -29,10 +29,14 @@ new Vue({
     state: {rotate: true, doubletap: true}
   },
   methods: {
-    test: function (e) {
+    test: function (e, name = '') {
       delete e.target
       this.event = e
-      console.log(e)
+      console.log(e, name)
+    },
+    testdouble: function (e) {
+      console.log('doubletap')
+      this.test(e)
     }
   }
 })

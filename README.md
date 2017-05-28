@@ -47,7 +47,7 @@ Using the `<v-touch>` component
 vue-touch supports all Hammer Events ot of the box, just bind a listener to the component with `v-on` and vue-touch will setup the Hammer Manager & Recognizer for you.
 
 |Recognizer|Events|Example|
-|---|----|----|
+|---|----|----|----|
 |**Pan**|`pan`, `panstart`, `panmove`, `panend`, `pancancel`, <br>`panleft`, `panright`, `panup`, `pandown` |`v-on:panstart="callback"`|
 |**Pinch**|`pinch`, `pinchstart`, `pinchmove`,`pinchend`, <br>`pinchcancel`, `pinchin`, `pinchout`| `v-on:pinchout="callback"`|
 |**Press**|`press`, `pressup`|`v-on:pressup="callback"`|
@@ -90,6 +90,31 @@ VueTouch keeps that from you and accepts simple strings as directions:
 
 ```javascript
 const directions = ['up', 'down', 'left', 'right', 'horizontal', 'vertical', 'all']
+```
+
+#### `recognize-with` & `require-failure` Props
+
+To define which gestures should be recognized together, use `recognize-with`:
+
+```html
+<v-touch
+  v-on:pan="handler"
+  v-on:swipe="otherHandler"
+  recognize-with="{pan: ['swipe' /*, other recognizers*/]}"
+/>
+```
+
+If you a recognizer to trigger only if another one failes, use `require-failure`:
+```html
+<!--
+  the tap handler will only be called if the doubletp recognizer doesn't trigger.
+-->
+<v-touch
+  v-on:tap="handleSingleTap"
+  v-on:doubletap="handleDoubleTap"
+  require-failure="{tap: ['doubletap']}"
+/>
+
 ```
 
 #### The 'enabled' Prop

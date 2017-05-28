@@ -1,10 +1,9 @@
 import test from 'ava'
 
 import Vue from 'vue/dist/vue.common'
-import VueTouch from './helpers/vue-touch'
-import Hammer from 'hammerjs'
+import VueTouch, { registerCustomEvent } from './helpers/vue-touch'
 
-VueTouch.registerCustomEvent('doubletap', {
+registerCustomEvent('doubletap', {
   type: 'tap',
   taps: 2
 })
@@ -32,7 +31,7 @@ test('Custom Event local options work', t => {
   vt = createFromTemplate(`
     <v-touch
       v-on:doubletap="cb"
-      v-bind:doubletap-options="{taps: 3}"
+      v-bind:doubletap="{taps: 3}"
     />
     `)
 

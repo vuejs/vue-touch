@@ -14,13 +14,19 @@
   </head>
   <body>
     <div id="app">
-      <!-- <v-touch tag="div" id="test-div"
-        @swipe="test"
-        @doubletap="test"
-        :doubletap-options="{taps: 3}"
+      <v-touch tag="div" id="test-div"
+        @tap="test($event, 'single')"
+        @doubletap="test($event, 'double')"
+        :doubletap-options="{ intervall: 400 }"
+        :recognize-with="{ doubletap: ['tap'] }"
+        :require-failure="{ tap: ['doubletap'] }"
       >
+      <!--
+
+      :require-failure="{ tap: ['doubletap'] }"
+      -->
         <p>{{event.type}}</p>
-      </v-touch> -->
+      </v-touch>
       <pre>{{event}}</pre>
 
       <rotator :state="state">
