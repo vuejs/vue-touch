@@ -132,7 +132,7 @@ var Component = {
         var gesture = gestures[i];
         if (this$1._events[gesture]) {
           var mainGesture = gestureMap[gesture];
-          var options = assign({}, (config[mainGesture] || {}), this$1[(mainGesture + "Options")]);
+          var options = assign({}, (config[mainGesture] || {}), this$1[(mainGesture + "Options")]);
           this$1.addRecognizer(mainGesture, options);
           this$1.addEvent(gesture);
         }
@@ -156,7 +156,7 @@ var Component = {
       if ( ref === void 0 ) ref = {};
       var mainGesture = ref.mainGesture;
       if (!this.recognizers[gesture]) {
-        var recognizer = new Hammer[capitalize(mainGesture || gesture)](guardDirections(options));
+        var recognizer = new Hammer[capitalize(mainGesture || gesture)](guardDirections(options));
         this.recognizers[gesture] = recognizer;
         this.hammer.add(recognizer);
         recognizer.recognizeWith(this.hammer.recognizers);
