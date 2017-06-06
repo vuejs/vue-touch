@@ -65,7 +65,7 @@ export default {
           // get the main gesture (e.g. 'panstart' -> 'pan')
           const mainGesture = gestureMap[gesture]
           //merge global and local options
-          const options = assign({}, (config[mainGesture] || {}), this[`${mainGesture}Options`])
+          const options = assign({}, (config[mainGesture] || {}), this[`${mainGesture}Options`])
           // add recognizer for this main gesture
           this.addRecognizer(mainGesture, options)
           // register Event Emit for the specific gesture
@@ -105,7 +105,7 @@ export default {
     addRecognizer: function addRecognizer(gesture, options, { mainGesture } = {}) {
       // create recognizer, e.g. new Hammer['Swipe'](options)
       if (!this.recognizers[gesture]) {
-        const recognizer = new Hammer[capitalize(mainGesture || gesture)](guardDirections(options))
+        const recognizer = new Hammer[capitalize(mainGesture || gesture)](guardDirections(options))
         this.recognizers[gesture] = recognizer
         this.hammer.add(recognizer)
         recognizer.recognizeWith(this.hammer.recognizers)
