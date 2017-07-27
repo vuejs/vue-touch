@@ -152,7 +152,7 @@
     }
   }
 
-  if (typeof exports == "object") {
+  if (typeof exports == "object" && typeof module !== 'undefined') {
     module.exports = vueTouch
   } else if (typeof define == "function" && define.amd) {
     define([], function(){ return vueTouch })
