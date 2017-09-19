@@ -1,4 +1,12 @@
-import Hammer from 'hammerjs' // used by guardDirections
+let Hammer
+// Client-side
+try {
+  Hammer = require('hammerjs')
+}
+// SSR, pass empty stub
+catch (err) {
+  Hammer = {}
+}
 
 /**
  * Tiny Object.assign replacement

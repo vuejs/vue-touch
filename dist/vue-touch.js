@@ -1,11 +1,16 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('hammerjs')) :
-  typeof define === 'function' && define.amd ? define(['hammerjs'], factory) :
-  (factory(global.Hammer));
-}(this, (function (Hammer) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (factory());
+}(this, (function () { 'use strict';
 
-Hammer = 'default' in Hammer ? Hammer['default'] : Hammer;
-
+var Hammer$1;
+try {
+  Hammer$1 = require('hammerjs');
+}
+catch (err) {
+  Hammer$1 = {};
+}
 function assign(target) {
   var sources = [], len = arguments.length - 1;
   while ( len-- > 0 ) sources[ len ] = arguments[ len + 1 ];
@@ -33,8 +38,8 @@ function guardDirections (options) {
   var dir = options.direction;
   if (typeof dir === 'string') {
     var hammerDirection = 'DIRECTION_' + dir.toUpperCase();
-    if (directions.indexOf(dir) > -1 && Hammer.hasOwnProperty(hammerDirection)) {
-      options.direction = Hammer[hammerDirection];
+    if (directions.indexOf(dir) > -1 && Hammer$1.hasOwnProperty(hammerDirection)) {
+      options.direction = Hammer$1[hammerDirection];
     } else {
       console.warn('[vue-touch] invalid direction: ' + dir);
     }
@@ -85,6 +90,13 @@ var gestureMap = {
   tap: 'tap'
 };
 
+var Hammer;
+try {
+  Hammer = require('hammerjs');
+}
+catch (err) {
+  Hammer = {};
+}
 var Component = {
   props: {
     options: createProp(),
