@@ -1,6 +1,9 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('hammerjs')) :
-  typeof define === 'function' && define.amd ? define(['hammerjs'], factory) :
+  try {
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('hammerjs')) : null
+  } catch (err) {
+    global.Hammer = {}
+  }
   (factory(global.Hammer));
 }(this, (function (Hammer) { 'use strict';
 
