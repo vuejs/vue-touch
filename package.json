@@ -61,8 +61,7 @@
   },
   "babel": {
     "presets": [
-      "es2015-node6",
-      "stage-2"
+      "env"
     ]
   },
   "dependencies": {
