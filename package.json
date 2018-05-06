@@ -61,7 +61,7 @@
   },
   "babel": {
     "presets": [
-      "env",
+      "env"
     ]
   },
   "dependencies": {
