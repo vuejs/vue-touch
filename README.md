@@ -1,4 +1,6 @@
-# vue-touch
+# This plugin is deprecated and not maintained anymore.
+
+## vue-touch
 
 > Touch events plugin for Vue.js. **This plugin does not support Vue 2.0 yet.**
 
