@@ -2,13 +2,13 @@
 
 ## vue-touch
 
-> Touch events plugin for Vue.js. **This plugin does not support Vue 2.0 yet.**
+> Touch events plugin for Vue.js
 
 This is a directive wrapper for Hammer.js 2.0.
 
 ## Install
 
-> This branch is only compatible with Vue 1.0. For the Vue 2.0 compatible rewrite, see the `next` branch
+> **This branch is only compatible with Vue 1.0**. For the Vue 2.0 compatible rewrite, see the [next](https://github.com/vuejs/vue-touch/tree/next) branch.
 
 #### CommonJS
 
